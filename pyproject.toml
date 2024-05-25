@@ -1,0 +1,68 @@
+[tool.poetry]
+name = "fast_micro"
+version = "0.1.0"
+description = ""
+authors = ["abharya.dev@gmail.com"]
+license = "MIT"
+
+[tool.ruff]
+exclude = [
+    '.eggs',
+    '.git',
+    '.ipynb_checkpoints',
+    '.mypy_cache',
+    '.nox',
+    '.pants.d',
+    '.pyenv',
+    '.pytest_cache',
+    '.pytype',
+    '.ruff_cache',
+    '.tox',
+    '.venv',
+    '.vscode',
+    '__pypackages__',
+    '_build',
+    'build',
+    'dist',
+    'node_modules',
+    'migrations',
+    'settings',
+    'site-packages',
+    'venv',
+]
+include = ['*.py']
+line-length = 120
+output-format = 'grouped'
+target-version = 'py311'
+
+[tool.ruff.lint]
+# DJ = Django
+# S = Bandit Security
+# SIM = Simplify
+# E = Pycodestyle Error
+# F = Pyflask
+# C4 = Comprehensions
+# BLE = Blind Exception
+# I = Isort
+# B = Flake8 Bugbear
+select = ['DJ', 'S', 'SIM', 'C4', 'E', 'F', 'BLE', 'I', 'B', 'N', 'ERA']
+ignore = ['E501', 'DJ001', 'N806']
+fixable = ['I']
+
+[tool.ruff.lint.per-file-ignores]
+'__init__.py' = ['F401']
+'*test*.py' = ['S']
+'*factories*.py' = ['S']
+
+[tool.ruff.format]
+quote-style = 'single'
+docstring-code-format = true
+
+
+[tool.aerich]
+tortoise_orm = "app.db.config.TORTOISE_ORM"
+location = "./migrations"
+src_folder = "./."
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

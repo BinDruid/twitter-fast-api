@@ -1,0 +1,17 @@
+version: '3.1'
+volumes:
+  DB_DATA:
+services:
+  db:
+    image: "postgres:13-alpine"
+    restart: "no"
+    ports:
+      - "5314:5432"
+    environment:
+      POSTGRES_USER: fast_micro
+      POSTGRES_PASSWORD: 123456
+      PGPASSWORD: 123456
+      POSTGRES_DB: fast_micro
+      PGDATA: /db_data
+    volumes:
+      - DB_DATA:/db_data

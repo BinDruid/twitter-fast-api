@@ -1,0 +1,7 @@
+fastapi
+tortoise-orm[asyncpg]
+pydantic
+pydantic-settings
+aerich
+ipython
+rich

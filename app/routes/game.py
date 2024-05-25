@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 
 from app.core.pagination import Params, paginate
-from .models import Tournament
+from app.models import Tournament
 
 router = APIRouter(prefix='/tournaments', tags=['tournaments'])
 

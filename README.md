@@ -34,7 +34,7 @@ FIRST_SUPERUSER_PASSWORD=admin
 Create your first migration
 
 ```shell
-aerich init-db
+aerich init-database
 ```
 
 Adding new migrations.

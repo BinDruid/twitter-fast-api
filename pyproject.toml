@@ -60,7 +60,7 @@ docstring-code-format = true
 
 
 [tool.aerich]
-tortoise_orm = "app.db.config.TORTOISE_ORM"
+tortoise_orm = "app.database.config.TORTOISE_ORM"
 location = "./migrations"
 src_folder = "./."
 [build-system]

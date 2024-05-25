@@ -5,6 +5,7 @@ from typing import Generic, TypeVar
 from pydantic import BaseModel, Field
 from pydantic.generics import GenericModel
 from tortoise.queryset import QuerySet
+
 from .config import settings
 
 T = TypeVar('T', bound=BaseModel)

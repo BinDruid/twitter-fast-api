@@ -9,12 +9,12 @@ import uvicorn
 from tortoise import Tortoise, connections
 
 from app.core.config import settings
-from app.db.config import TORTOISE_ORM
+from app.database.config import TORTOISE_ORM
 
 cli = typer.Typer()
 
 
-@cli.command('migrate-db')
+@cli.command('migrate-database')
 def migrate_db():
     """Apply database migrations"""
     import subprocess

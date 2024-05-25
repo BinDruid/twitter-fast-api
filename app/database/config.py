@@ -18,7 +18,7 @@ TORTOISE_ORM = {
     },
     'apps': {
         'models': {
-            'models': [f'{app}.models' for app in settings.INSTALLED_APPS] + ['aerich.models'],
+            'models': ['app.models.game'] + ['aerich.models'],
             'default_connection': 'default',
         }
     },

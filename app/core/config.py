@@ -2,11 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from pydantic import (
-    AnyHttpUrl,
-    HttpUrl,
-    PostgresDsn,
-)
+from pydantic import AnyHttpUrl, HttpUrl
 from pydantic_settings import BaseSettings
 
 try:
@@ -36,22 +32,16 @@ class Settings(BaseSettings):
 
     ENVIRONMENT: Environment = 'dev'
     SECRET_KEY: str = 'x!n5u!u==_n00rp%zu6o92ms82&3_-bqpe((4!%%zluxiq$!@b'
-    DEBUG: bool = False
+    DEBUG: bool = True
     SERVER_HOST: AnyHttpUrl = 'http://localhost:8000'  # type:ignore
     SENTRY_DSN: HttpUrl | None = None
     PAGINATION_PER_PAGE: int = 20
 
-    BACKEND_CORS_ORIGINS: list[AnyHttpUrl] = []
     DB_HOST: str = 'localhost'
     DB_PORT: int = 5432
     DB_USER: str = 'postgres'
     DB_PASS: str = 'postgres'
     DB_NAME: str = 'postgres'
-    SES_ACCESS_KEY: str | None = None
-    SES_SECRET_KEY: str | None = None
-    SES_REGION: str | None = None
-    DEFAULT_FROM_NAME: str | None = None
-    INSTALLED_APPS: [str] = ['app.sample']
 
     class Config:
         env_file = '.env'

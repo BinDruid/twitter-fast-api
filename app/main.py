@@ -1,9 +1,10 @@
 from fastapi import FastAPI
 
 from .core.config import settings
+from .core.middleware import ExceptionMiddleware
 from .database.config import register_db
 from .lifetime import startup
-from .routes.game import router as game_router
+from .routes.users import router as user_router
 
 
 def get_application() -> FastAPI:
@@ -12,7 +13,7 @@ def get_application() -> FastAPI:
         description='',
         debug=settings.DEBUG,
     )
-    _app.include_router(game_router)
+    _app.include_router(user_router)
     register_db(_app)
     _app.on_event('startup')(startup)
 
@@ -20,3 +21,5 @@ def get_application() -> FastAPI:
 
 
 app = get_application()
+
+app.add_middleware(ExceptionMiddleware)

@@ -18,11 +18,11 @@ async def users_list(params: Params = Depends()):
     return await paginate(User.all(), params)
 
 
-@router.post('/')
+@router.post('/', response_model=UserPydanticOut)
 async def create_user(user: UserPydanticIn):
     hashed_password = hash_password(user.password).decode('utf-8')
     user = await User.create(email=user.email, password=hashed_password)
-    return {'user_id': user.id}
+    return user
 
 
 @router.get('/{user_id}', response_model=UserPydanticOut)
@@ -30,7 +30,7 @@ async def delete_user(user_id: int):
     user = await User.get(id=user_id)
     if not user:
         raise HTTPException(status_code=404, detail=f'User {user_id} not found')
-    return await UserPydanticOut.from_tortoise_orm(user)
+    return user
 
 
 @router.delete('/{user_id}', response_model=Status)

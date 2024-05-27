@@ -36,7 +36,9 @@ class Settings(BaseSettings):
     SERVER_HOST: AnyHttpUrl = 'http://localhost:8000'  # type:ignore
     SENTRY_DSN: HttpUrl | None = None
     PAGINATION_PER_PAGE: int = 20
-
+    JWT_SECRET: str = 'p-)w9@rq+xdr&chuco0fykbpjsnpq9&zj7k1i*y8$4#&)0pi1y'
+    JWT_ALG: str = 'HS256'
+    JWT_EXP: int = 86400  # Seconds
     DB_HOST: str = 'localhost'
     DB_PORT: int = 5432
     DB_USER: str = 'postgres'

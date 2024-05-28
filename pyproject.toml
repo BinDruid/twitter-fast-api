@@ -60,9 +60,6 @@ docstring-code-format = true
 
 
 [tool.aerich]
-tortoise_orm = "app.database.config.TORTOISE_ORM"
+tortoise_orm = "src.database.config.TORTOISE_ORM"
 location = "./migrations"
 src_folder = "./."
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"

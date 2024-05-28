@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from tortoise.contrib.fastapi import register_tortoise
 
-from app.core.config import settings
+from src.core.config import settings
 
 TORTOISE_ORM = {
     'connections': {
@@ -18,7 +18,7 @@ TORTOISE_ORM = {
     },
     'apps': {
         'models': {
-            'models': ['app.models'] + ['aerich.models'],
+            'models': [f'{app}.models' for app in settings.INSTALLED_APPS] + ['aerich.models'],
             'default_connection': 'default',
         }
     },

@@ -2,9 +2,8 @@ from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from starlette.exceptions import HTTPException
 
-from app.core.pagination import Params, paginate
-from app.models import User
-from app.models.users import UserPydanticIn, UserPydanticOut, hash_password
+from src.core.pagination import Params, paginate
+from .models import User, UserPydanticIn, UserPydanticOut, hash_password
 
 router = APIRouter(prefix='/users', tags=['users'])
 

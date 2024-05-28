@@ -3,7 +3,7 @@ from __future__ import annotations
 from tortoise import fields
 from tortoise.models import Model
 
-from app.database.mixin_models import TimeStampedModel
+from src.database.mixin_models import TimeStampedModel
 
 
 class Comment(TimeStampedModel, Model):

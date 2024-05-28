@@ -8,8 +8,8 @@ import typer
 import uvicorn
 from tortoise import Tortoise, connections
 
-from app.core.config import settings
-from app.database.config import TORTOISE_ORM
+from src.core.config import settings
+from src.database.config import TORTOISE_ORM
 
 cli = typer.Typer()
 
@@ -32,7 +32,7 @@ def runserver(
     """Run the API development server(uvicorn)."""
     migrate_db()
     uvicorn.run(
-        'app.main:app',
+        'src.main:api',
         host=host,
         port=port,
         log_level=log_level,

@@ -7,8 +7,10 @@ async def upgrade(db: BaseDBAsyncClient) -> str:
     "created_at" TIMESTAMPTZ NOT NULL  DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ NOT NULL  DEFAULT CURRENT_TIMESTAMP,
     "id" SERIAL NOT NULL PRIMARY KEY,
-    "first_name" VARCHAR(32) NOT NULL,
-    "last_name" VARCHAR(32) NOT NULL
+    "first_name" VARCHAR(32),
+    "last_name" VARCHAR(32),
+    "email" VARCHAR(254) NOT NULL,
+    "password" VARCHAR(128) NOT NULL
 );
 CREATE TABLE IF NOT EXISTS "post" (
     "created_at" TIMESTAMPTZ NOT NULL  DEFAULT CURRENT_TIMESTAMP,

@@ -8,8 +8,8 @@ from tortoise import fields
 from tortoise.contrib.pydantic import pydantic_model_creator
 from tortoise.models import Model
 
-from app.core.config import settings
-from app.database.mixin_models import TimeStampedModel
+from src.core.config import settings
+from src.database.mixin_models import TimeStampedModel
 
 
 def hash_password(password: str):

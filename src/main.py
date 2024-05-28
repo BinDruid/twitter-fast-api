@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 
-from .core.config import settings
-from .core.middleware import ExceptionMiddleware
-from .database.config import register_db
-from .lifetime import startup
-from .users.routes import router as user_router
+from src.core.config import settings
+from src.core.middleware import ExceptionMiddleware
+from src.database.config import register_db
+from src.lifetime import startup
+from src.users.routes import router as user_router
 
 
 def get_application() -> FastAPI:

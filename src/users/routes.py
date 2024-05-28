@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
+from pydantic import ValidationError
 from starlette.exceptions import HTTPException
-
+from src.core.logging import logger
 from src.core.pagination import Params, paginate
-from .models import User, UserPydanticIn, UserPydanticOut, hash_password
+from .models import User, UserPydanticIn, UserPydanticOut, UserPydanticAuth, hash_password
 
 router = APIRouter(prefix='/users', tags=['users'])
 
@@ -38,3 +39,12 @@ async def delete_user(user_id: int):
     if not deleted_count:
         raise HTTPException(status_code=404, detail=f'User {user_id} not found')
     return Status(message=f'Deleted user {user_id}')
+
+
+@router.post('/login')
+async def login_user(user_credentials: UserPydanticAuth):
+    user = await User.get(email=user_credentials.email)
+    is_authenticated = user.check_password(user_credentials.password)
+    if not is_authenticated:
+        return HTTPException(status_code=404, detail=f'Invalid credentials for {user.email}')
+    return {'email': user.email, 'token': user.token}

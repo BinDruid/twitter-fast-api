@@ -23,7 +23,7 @@ class User(TimeStampedModel, Model):
     id = fields.IntField(primary_key=True)
     first_name = fields.CharField(max_length=32, null=True)
     last_name = fields.CharField(max_length=32, null=True)
-    email = fields.CharField(max_length=254)
+    email = fields.CharField(max_length=254, unique=True)
     password = fields.CharField(max_length=128)
 
     def __str__(self):
@@ -39,6 +39,10 @@ class User(TimeStampedModel, Model):
         }
         return jwt.encode(data, settings.JWT_SECRET, algorithm=settings.JWT_ALG)
 
+    def check_password(self, password):
+        return bcrypt.checkpw(password.encode('utf-8'), self.password.encode('utf-8'))
+
 
 UserPydanticIn = pydantic_model_creator(User, name='User', include=('email', 'first_name', 'last_name', 'password'))
+UserPydanticAuth = pydantic_model_creator(User, name='UserAuth', include=('email', 'password'))
 UserPydanticOut = pydantic_model_creator(User, name='UserOut', include=('id', 'email',  'created_at'))

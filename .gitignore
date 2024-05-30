@@ -132,3 +132,4 @@ dmypy.json
 .idea/
 
 /dump.rdb
+http-client.env.json

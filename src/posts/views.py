@@ -4,6 +4,7 @@ from tortoise.exceptions import DoesNotExist
 
 from src.core.pagination import Params, paginate
 from src.users.auth import CurrentUser
+
 from .models import Post, PostPydanticIn, PostPydanticOut
 
 router = APIRouter()

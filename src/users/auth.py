@@ -37,3 +37,7 @@ def get_current_user(request: Request):
 
 
 CurrentUser = Annotated[User, Depends(get_current_user)]
+
+InvalidCredentialException = HTTPException(
+    status_code=HTTP_401_UNAUTHORIZED, detail=[{'msg': 'Could not validate credentials'}]
+)

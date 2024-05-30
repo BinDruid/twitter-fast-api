@@ -1,9 +1,5 @@
-GET http://localhost:8000/api/v1/users/
-Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTcwNzkwMDYuNDczODA3LCJlbWFpbCI6ImEuYWJoYXJ5YUBnbWFpbC5jb20iLCJpZCI6MX0.Tyf_urSNJM4eNhu1F6yev_bbv5_e-OfmxjOOeEKC33g
-
 ###
-POST http://localhost:8000/api/v1/auth/
+POST {{base_url}}/auth/
 Content-Type: application/json
 
 {"email": "a.abharya@gmail.com",
@@ -11,17 +7,7 @@ Content-Type: application/json
 }
 ###
 
-###
-GET http://localhost:8000/api/v1/users/3/
-###
-
-
-###
-DELETE http://localhost:8000/api/v1/users/2/
-###
-
-###
-POST http://localhost:8000/api/v1/auth/login/
+POST {{base_url}}/auth/login/
 Content-Type: application/json
 
 {"email": "a.abharya@gmail.com",
@@ -29,6 +15,29 @@ Content-Type: application/json
 }
 ###
 
-GET http://localhost:8000/api/v1/posts/
+GET {{base_url}}/users/profile/
 Accept: application/json
+Authorization: Bearer {{token}}
 
+###
+DELETE {{base_url}}/profile/
+###
+
+###
+POST {{base_url}}/posts/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{"content": "this is a test message"
+}
+###
+
+GET {{base_url}}/posts/
+Accept: application/json
+Authorization: Bearer {{token}}
+
+###
+DELETE {{base_url}}/posts/3/
+Accept: application/json
+Authorization: Bearer {{token}}
+###

@@ -6,10 +6,10 @@ from jose import JWTError, jwt
 from jose.exceptions import JWKError
 from starlette.requests import Request
 from starlette.status import HTTP_401_UNAUTHORIZED
-from users.models import User
 
 from src.core.config import settings
 from src.core.logging import logger
+from src.users.models import User
 
 
 def get_current_user(request: Request):

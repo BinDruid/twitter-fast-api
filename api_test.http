@@ -28,7 +28,7 @@ POST {{base_url}}/posts/
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-{"content": "this is a test message"
+{"content": "this is a 3 test message"
 }
 ###
 
@@ -37,7 +37,15 @@ Accept: application/json
 Authorization: Bearer {{token}}
 
 ###
-DELETE {{base_url}}/posts/3/
+PATCH {{base_url}}/posts/2/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{"content": "this is a updated 2 message"
+}
+
+###
+DELETE {{base_url}}/posts/4/
 Accept: application/json
 Authorization: Bearer {{token}}
 ###

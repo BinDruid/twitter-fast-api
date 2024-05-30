@@ -5,7 +5,7 @@ from starlette import status
 from starlette.exceptions import HTTPException
 from tortoise.exceptions import DoesNotExist
 
-from .auth import CurrentUser
+from .auth import CurrentUser, InvalidCredentialException
 from .models import User, UserPydanticIn, UserPydanticOut, hash_password
 
 auth_router = APIRouter()
@@ -37,12 +37,11 @@ async def create_user(user: UserPydanticIn):
 
 @auth_router.post('/login/')
 async def login_user(email: Annotated[str, Body()], password: Annotated[str, Body()]):
-    default_auth_error = HTTPException(status_code=404, detail=f'Invalid credentials for {email}')
     try:
         user = await User.get(email=email)
     except DoesNotExist:
-        return default_auth_error
+        return InvalidCredentialException
     is_authenticated = user.check_password(password)
     if not is_authenticated:
-        return default_auth_error
+        return InvalidCredentialException
     return {'email': user.email, 'token': user.token}

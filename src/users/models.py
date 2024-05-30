@@ -41,5 +41,4 @@ class User(TimeStampedModel, Model):
 
 
 UserPydanticIn = pydantic_model_creator(User, name='User', include=('email', 'first_name', 'last_name', 'password'))
-UserPydanticAuth = pydantic_model_creator(User, name='UserAuth', include=('email', 'password'))
 UserPydanticOut = pydantic_model_creator(User, name='UserOut', include=('id', 'email', 'created_at'))

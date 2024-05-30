@@ -1,52 +1,48 @@
-from fastapi import APIRouter, Depends
-from pydantic import BaseModel
-from starlette.exceptions import HTTPException
+from typing import Annotated
 
-from src.core.pagination import Params, paginate
+from fastapi import APIRouter, Body
+from starlette import status
+from starlette.exceptions import HTTPException
+from tortoise.exceptions import DoesNotExist
 
 from .auth import CurrentUser
-from .models import User, UserPydanticAuth, UserPydanticIn, UserPydanticOut, hash_password
+from .models import User, UserPydanticIn, UserPydanticOut, hash_password
 
 auth_router = APIRouter()
 user_router = APIRouter()
 
 
-class Status(BaseModel):
-    message: str
+@user_router.get('/profile/', response_model=UserPydanticOut)
+async def get_user_profile(user: CurrentUser):
+    user_profile = await User.get(id=user['id'])
+    if not user_profile:
+        raise HTTPException(status_code=404, detail=f"User {user['email']} not found")
+    return user_profile
 
 
-@user_router.get('/')
-async def users_list(user: CurrentUser, params: Params = Depends()):
-    return await paginate(User.all(), params)
-
-
-@user_router.get('/{user_id}', response_model=UserPydanticOut)
-async def delete_user(user_id: int):
-    user = await User.get(id=user_id)
-    if not user:
-        raise HTTPException(status_code=404, detail=f'User {user_id} not found')
-    return user
-
-
-@user_router.delete('/{user_id}', response_model=Status)
-async def delete_user(user_id: int):
-    deleted_count = await User.filter(id=user_id).delete()
+@user_router.delete('/profile/', status_code=status.HTTP_204_NO_CONTENT)
+async def delete_user(user: CurrentUser):
+    deleted_count = await User.filter(id=user['id']).delete()
     if not deleted_count:
-        raise HTTPException(status_code=404, detail=f'User {user_id} not found')
-    return Status(message=f'Deleted user {user_id}')
+        raise HTTPException(status_code=404, detail=f"User {user['email']} not found")
+    return {'message': f"Deleted user {user['id']}"}
 
 
-@auth_router.post('/', response_model=UserPydanticOut)
+@auth_router.post('/', response_model=UserPydanticOut, status_code=status.HTTP_201_CREATED)
 async def create_user(user: UserPydanticIn):
     hashed_password = hash_password(user.password).decode('utf-8')
     user = await User.create(email=user.email, password=hashed_password)
     return user
 
 
-@auth_router.post('/login')
-async def login_user(user_credentials: UserPydanticAuth):
-    user = await User.get(email=user_credentials.email)
-    is_authenticated = user.check_password(user_credentials.password)
+@auth_router.post('/login/')
+async def login_user(email: Annotated[str, Body()], password: Annotated[str, Body()]):
+    default_auth_error = HTTPException(status_code=404, detail=f'Invalid credentials for {email}')
+    try:
+        user = await User.get(email=email)
+    except DoesNotExist:
+        return default_auth_error
+    is_authenticated = user.check_password(password)
     if not is_authenticated:
-        return HTTPException(status_code=404, detail=f'Invalid credentials for {user.email}')
+        return default_auth_error
     return {'email': user.email, 'token': user.token}

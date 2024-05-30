@@ -1,8 +1,9 @@
 GET http://localhost:8000/api/v1/users/
 Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTcwNzkwMDYuNDczODA3LCJlbWFpbCI6ImEuYWJoYXJ5YUBnbWFpbC5jb20iLCJpZCI6MX0.Tyf_urSNJM4eNhu1F6yev_bbv5_e-OfmxjOOeEKC33g
 
 ###
-POST http://localhost:8000/api/v1/users/
+POST http://localhost:8000/api/v1/auth/
 Content-Type: application/json
 
 {"email": "a.abharya@gmail.com",
@@ -20,7 +21,7 @@ DELETE http://localhost:8000/api/v1/users/2/
 ###
 
 ###
-POST http://localhost:8000/api/v1/users/login/
+POST http://localhost:8000/api/v1/auth/login/
 Content-Type: application/json
 
 {"email": "a.abharya@gmail.com",
@@ -30,3 +31,4 @@ Content-Type: application/json
 
 GET http://localhost:8000/api/v1/posts/
 Accept: application/json
+

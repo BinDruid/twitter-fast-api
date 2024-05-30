@@ -16,4 +16,5 @@ class Post(TimeStampedModel, Model):
         return f'{self.author}#{self.id}'
 
 
+PostPydanticIn = pydantic_model_creator(Post, name='PostIn', include=('content',))
 PostPydanticOut = pydantic_model_creator(Post, name='PostOut', include=('id', 'author', 'content'))

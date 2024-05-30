@@ -4,6 +4,7 @@ from starlette.exceptions import HTTPException
 
 from src.core.pagination import Params, paginate
 
+from .auth import CurrentUser
 from .models import User, UserPydanticAuth, UserPydanticIn, UserPydanticOut, hash_password
 
 auth_router = APIRouter()
@@ -15,7 +16,7 @@ class Status(BaseModel):
 
 
 @user_router.get('/')
-async def users_list(params: Params = Depends()):
+async def users_list(user: CurrentUser, params: Params = Depends()):
     return await paginate(User.all(), params)
 
 

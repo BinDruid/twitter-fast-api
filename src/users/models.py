@@ -33,10 +33,7 @@ class User(TimeStampedModel, Model):
     def token(self):
         now = datetime.utcnow()
         exp = (now + timedelta(seconds=settings.JWT_EXP)).timestamp()
-        data = {
-            'exp': exp,
-            'email': self.email,
-        }
+        data = {'exp': exp, 'email': self.email, 'id': self.id}
         return jwt.encode(data, settings.JWT_SECRET, algorithm=settings.JWT_ALG)
 
     def check_password(self, password):

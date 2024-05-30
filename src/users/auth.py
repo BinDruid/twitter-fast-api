@@ -1,9 +1,12 @@
-from fastapi import HTTPException
+from typing import Annotated
+
+from fastapi import Depends, HTTPException
 from fastapi.security.utils import get_authorization_scheme_param
 from jose import JWTError, jwt
 from jose.exceptions import JWKError
 from starlette.requests import Request
 from starlette.status import HTTP_401_UNAUTHORIZED
+from users.models import User
 
 from src.core.config import settings
 from src.core.logging import logger
@@ -30,4 +33,7 @@ def get_current_user(request: Request):
             status_code=HTTP_401_UNAUTHORIZED,
             detail=[{'msg': 'Could not validate credentials'}],
         ) from None
-    return data['email']
+    return {'id': data['id'], 'email': data['email']}
+
+
+CurrentUser = Annotated[User, Depends(get_current_user)]

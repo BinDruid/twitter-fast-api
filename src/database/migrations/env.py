@@ -5,7 +5,7 @@ from sqlalchemy import pool
 
 from alembic import context
 from src.core.config import settings
-from src.users.models import User
+from src.users.models import User, Followership
 from src.posts.models import Post
 from src.mentions.models import Mention
 from src.likes.models import Like

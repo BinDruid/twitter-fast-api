@@ -10,4 +10,5 @@ psycopg2-binary
 sqlalchemy
 alembic
 sqlalchemy-filters
+ruff
 

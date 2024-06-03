@@ -51,14 +51,14 @@ async def remove_user_from_followers(user: CurrentUser, db_session: DbSession, f
 
 
 @user_router.get('/me/followings/', response_model=UserList)
-def get_user_followers(user: CurrentUser, db_session: DbSession, page: int = 1):
+def get_user_followings(user: CurrentUser, db_session: DbSession, page: int = 1):
     subquery = db_session.query(Followership.following_id).filter(Followership.follower_id == user['id']).subquery()
     followings = db_session.query(User).filter(User.id.in_(subquery))
     return paginate(items=followings, page=page)
 
 
 @user_router.post('/me/followings/', status_code=status.HTTP_201_CREATED)
-async def get_user_followers(user: CurrentUser, db_session: DbSession, following: FollowerShipPayload):
+async def follow_user(user: CurrentUser, db_session: DbSession, following: FollowerShipPayload):
     followership = Followership(follower_id=user['id'], following_id=following.user_id)
     db_session.add(followership)
     db_session.commit()

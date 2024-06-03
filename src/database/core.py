@@ -12,7 +12,7 @@ from src.core.config import settings
 
 
 def get_db_session() -> Session:
-    db_url = settings.DB_URL
+    db_url = str(settings.DB_URL)
     engine = create_engine(db_url)
     session_class = sessionmaker(bind=engine)
     session = session_class()

@@ -1,7 +1,9 @@
 fastapi
-tortoise-orm[asyncpg]
 pydantic
 pydantic-settings
-aerich
 ipython
 rich
+sqlalchemy-filters
+psycopg2-binary
+alembic
+sqlalchemy

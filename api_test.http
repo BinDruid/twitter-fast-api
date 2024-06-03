@@ -15,17 +15,47 @@ Content-Type: application/json
 }
 ###
 
-GET {{base_url}}/users/profile/
+GET {{base_url}}/users/me/
 Accept: application/json
 Authorization: Bearer {{token}}
 
 ###
-DELETE {{base_url}}/users/profile/
+DELETE {{base_url}}/users/me/
 Accept: application/json
 Authorization: Bearer {{token}}
 ###
 
 ###
+GET {{base_url}}/users/me/followings/
+Accept: application/json
+Authorization: Bearer {{token}}
+###
+
+###
+GET {{base_url}}/users/me/followers/
+Accept: application/json
+Authorization: Bearer {{token}}
+###
+
+DELETE {{base_url}}/users/me/followers/1/
+Accept: application/json
+Authorization: Bearer {{token}}
+###
+
+###
+POST {{base_url}}/users/me/followings/
+Accept: application/json
+Authorization: Bearer {{token}}
+
+{"user_id": 1
+}
+###
+
+DELETE {{base_url}}/users/me/followings/2/
+Accept: application/json
+Authorization: Bearer {{token}}
+###
+
 POST {{base_url}}/posts/
 Content-Type: application/json
 Authorization: Bearer {{token}}

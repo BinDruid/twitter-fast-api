@@ -35,7 +35,6 @@ class Settings(BaseSettings):
     DEBUG: bool = True
     SERVER_HOST: AnyHttpUrl = 'http://localhost:8000'  # type:ignore
     SENTRY_DSN: HttpUrl | None = None
-    INSTALLED_APPS: [str] = ['src.users', 'src.posts', 'src.comments', 'src.likes']
     PAGINATION_PER_PAGE: int = 20
     JWT_SECRET: str = 'p-)w9@rq+xdr&chuco0fykbpjsnpq9&zj7k1i*y8$4#&)0pi1y'
     JWT_ALG: str = 'HS256'

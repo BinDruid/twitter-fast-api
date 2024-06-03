@@ -1,9 +1,13 @@
 fastapi
+python-jose
+bcrypt
+typer
 pydantic
 pydantic-settings
 ipython
 rich
-sqlalchemy-filters
 psycopg2-binary
-alembic
 sqlalchemy
+alembic
+sqlalchemy-filters
+

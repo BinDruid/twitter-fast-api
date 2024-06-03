@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "fast_micro"
+name = "twitter_fast_api"
 version = "0.1.0"
 description = ""
 authors = ["abharya.dev@gmail.com"]
@@ -36,7 +36,6 @@ output-format = 'grouped'
 target-version = 'py311'
 
 [tool.ruff.lint]
-# DJ = Django
 # S = Bandit Security
 # SIM = Simplify
 # E = Pycodestyle Error
@@ -45,7 +44,7 @@ target-version = 'py311'
 # BLE = Blind Exception
 # I = Isort
 # B = Flake8 Bugbear
-select = ['DJ', 'S', 'SIM', 'C4', 'E', 'F', 'BLE', 'I', 'B', 'N', 'ERA']
+select = ['S', 'SIM', 'C4', 'E', 'F', 'BLE', 'I', 'B', 'N', 'ERA']
 ignore = ['E501', 'DJ001', 'N806']
 fixable = ['I']
 
@@ -57,9 +56,3 @@ fixable = ['I']
 [tool.ruff.format]
 quote-style = 'single'
 docstring-code-format = true
-
-
-[tool.aerich]
-tortoise_orm = "src.database.config.TORTOISE_ORM"
-location = "./migrations"
-src_folder = "./."

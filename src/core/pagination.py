@@ -1,30 +1,33 @@
-from __future__ import annotations
+from sqlalchemy.exc import ProgrammingError
+from sqlalchemy.orm.query import Query
+from sqlalchemy_filters import apply_pagination
 
-from typing import Generic, TypeVar
-
-from pydantic import BaseModel, Field
-from pydantic.generics import GenericModel
-from tortoise.queryset import QuerySet
+from src.database import PydanticBase
 
 from .config import settings
-
-T = TypeVar('T', bound=BaseModel)
-
-
-class Params(BaseModel):
-    limit: int = Field(settings.PAGINATION_PER_PAGE, gt=0)
-    offset: int = Field(0, gt=-1)
+from .logging import logger
 
 
-class Page(GenericModel, Generic[T]):
-    items: list[T]
+class Pagination(PydanticBase):
+    itemsPerPage: int
+    page: int
     total: int
 
 
-async def paginate(items: QuerySet, params: Params) -> dict:
-    offset = params.offset
-    limit = params.limit
+def paginate(*, items: Query, page: int) -> dict:
+    try:
+        query, pagination = apply_pagination(items, page_number=page, page_size=settings.PAGINATION_PER_PAGE)
+    except ProgrammingError as e:
+        logger.info(e)
+        return {
+            'items': [],
+            'itemsPerPage': settings.PAGINATION_PER_PAGE,
+            'page': page,
+            'total': 0,
+        }
     return {
-        'items': await items.limit(limit).offset(offset).order_by('-created_at'),
-        'total': await items.count(),
+        'items': query.all(),
+        'itemsPerPage': pagination.page_size,
+        'page': pagination.page_number,
+        'total': pagination.total_results,
     }

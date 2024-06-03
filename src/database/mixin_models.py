@@ -1,9 +1,8 @@
-from tortoise import fields, models
+from datetime import datetime
+
+from sqlalchemy import Column, DateTime
 
 
-class TimeStampedModel(models.Model):
-    created_at = fields.DatetimeField(auto_now_add=True)
-    updated_at = fields.DatetimeField(auto_now=True)
-
-    class Meta:
-        abstract = True
+class TimeStampedModel:
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow)

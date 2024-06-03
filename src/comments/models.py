@@ -1,16 +1,16 @@
-from __future__ import annotations
+from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy.orm import relationship
 
-from tortoise import fields
-from tortoise.models import Model
-
+from src.database.core import Base
 from src.database.mixin_models import TimeStampedModel
 
 
-class Comment(TimeStampedModel, Model):
-    id = fields.IntField(primary_key=True)
-    post = fields.ForeignKeyField('models.Post', related_name='comments')
-    author = fields.ForeignKeyField('models.User', related_name='comments')
-    content = fields.TextField()
+class Comment(Base, TimeStampedModel):
+    __tablename__ = 'comments'
 
-    def __str__(self):
-        return f'{self.post}#{self.id}'
+    id = Column(Integer, primary_key=True)
+    author_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'))
+    author = relationship('User', backref='comments')
+    post_id = Column(Integer, ForeignKey('posts.id', ondelete='CASCADE'))
+    post = relationship('Post', backref='comments')
+    content = Column(String, nullable=False)

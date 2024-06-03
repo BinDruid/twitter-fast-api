@@ -1,20 +1,38 @@
-from __future__ import annotations
+from datetime import datetime
 
-from tortoise import fields
-from tortoise.contrib.pydantic import pydantic_model_creator
-from tortoise.models import Model
+from pydantic import Field
+from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy.orm import relationship
 
+from src.core.pagination import Pagination
+from src.database.core import Base, PydanticBase
 from src.database.mixin_models import TimeStampedModel
+from src.users.models import UserDetail
 
 
-class Post(TimeStampedModel, Model):
-    id = fields.IntField(primary_key=True)
-    author = fields.ForeignKeyField('models.User', related_name='posts')
-    content = fields.TextField()
+class Post(Base, TimeStampedModel):
+    __tablename__ = 'posts'
+
+    id = Column(Integer, primary_key=True)
+    content = Column(String, nullable=False)
+    author_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'))
+    author = relationship('User', backref='posts')
 
     def __str__(self):
         return f'{self.author}#{self.id}'
 
 
-PostPydanticIn = pydantic_model_creator(Post, name='PostIn', include=('content',))
-PostPydanticOut = pydantic_model_creator(Post, name='PostOut', include=('id', 'author', 'content'))
+class PostPayload(PydanticBase):
+    content: str = Field(max_length=128)
+
+
+class PostDetail(PydanticBase):
+    id: int
+    content: str
+    created_at: datetime
+    updated_at: datetime
+    author: UserDetail
+
+
+class PostList(Pagination):
+    items: list[PostDetail] = []

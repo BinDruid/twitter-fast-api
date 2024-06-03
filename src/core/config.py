@@ -40,11 +40,7 @@ class Settings(BaseSettings):
     JWT_SECRET: str = 'p-)w9@rq+xdr&chuco0fykbpjsnpq9&zj7k1i*y8$4#&)0pi1y'
     JWT_ALG: str = 'HS256'
     JWT_EXP: int = 86400  # Seconds
-    DB_HOST: str = 'localhost'
-    DB_PORT: int = 5432
-    DB_USER: str = 'postgres'
-    DB_PASS: str = 'postgres'
-    DB_NAME: str = 'postgres'
+    DB_URL: str = ''
 
     class Config:
         env_file = '.env'

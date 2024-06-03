@@ -1,15 +1,18 @@
-from __future__ import annotations
+from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy.orm import relationship
 
-from tortoise import fields
-from tortoise.models import Model
-
+from src.database.core import Base
 from src.database.mixin_models import TimeStampedModel
 
 
-class Like(TimeStampedModel, Model):
-    id = fields.IntField(primary_key=True)
-    post = fields.ForeignKeyField('models.Post', related_name='likes')
-    author = fields.ForeignKeyField('models.User', related_name='likes')
+class Like(Base, TimeStampedModel):
+    __tablename__ = 'likes'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'))
+    user = relationship('User', backref='likes')
+    post_id = Column(Integer, ForeignKey('posts.id', ondelete='CASCADE'))
+    post = relationship('Post', backref='likes')
 
     def __str__(self):
-        return f'{self.post}#{self.id}'
+        return f'{self.user_id}#{self.id}'

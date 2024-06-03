@@ -1,15 +1,10 @@
 from __future__ import annotations
 
-from functools import partial
-from itertools import chain
-
 import httpx
 import typer
 import uvicorn
-from tortoise import Tortoise, connections
 
 from src.core.config import settings
-from src.database.config import TORTOISE_ORM
 
 cli = typer.Typer()
 
@@ -19,7 +14,7 @@ def migrate_db():
     """Apply database migrations"""
     import subprocess
 
-    subprocess.run(('aerich', 'upgrade'))
+    subprocess.run(('migrations', 'upgrade', 'head'))
 
 
 @cli.command('runserver')
@@ -30,54 +25,13 @@ def runserver(
     reload: bool = True,
 ):
     """Run the API development server(uvicorn)."""
-    migrate_db()
+    # migrate_db()
     uvicorn.run(
         'src.main:api',
         host=host,
         port=port,
         log_level=log_level,
         reload=reload,
-    )
-
-
-@cli.command()
-def shell():
-    """Opens an interactive shell with objects auto imported"""
-    try:
-        from IPython import start_ipython
-        from traitlets.config import Config
-    except ImportError:
-        typer.secho(
-            'Install iPython using `poetry add ipython` to use this feature.',
-            fg=typer.colors.RED,
-        )
-        raise typer.Exit()
-
-    def teardown_shell():
-        import asyncio
-
-        print('closing tortoise connections....')
-        asyncio.run(connections.close_all())
-
-    tortoise_init = partial(Tortoise.init, config=TORTOISE_ORM)
-    modules = list(chain(*[app.get('models') for app in TORTOISE_ORM.get('apps').values()]))
-    auto_imports = [
-        'from tortoise.expressions import Q, F, Subquery',
-        'from tortoise.query_utils import Prefetch',
-    ] + [f'from {module} import *' for module in modules]
-    shell_setup = [
-        'import atexit',
-        '_ = atexit.register(teardown_shell)',
-        'await tortoise_init()',
-    ]
-    typer.secho('Auto Imports\n' + '\n'.join(auto_imports), fg=typer.colors.GREEN)
-    c = Config()
-    c.InteractiveShell.autoawait = True
-    c.InteractiveShellApp.exec_lines = auto_imports + shell_setup
-    start_ipython(
-        argv=[],
-        user_ns={'teardown_shell': teardown_shell, 'tortoise_init': tortoise_init},
-        config=c,
     )
 
 

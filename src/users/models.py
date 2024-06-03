@@ -1,15 +1,13 @@
-from __future__ import annotations
-
 from datetime import datetime, timedelta
+from typing import Optional
 
 import bcrypt
 from jose import jwt
-from tortoise import fields
-from tortoise.contrib.pydantic import pydantic_model_creator
-from tortoise.models import Model
+from pydantic.networks import EmailStr
+from sqlalchemy import Boolean, Column, Integer, String
 
 from src.core.config import settings
-from src.database.mixin_models import TimeStampedModel
+from src.database import Base, PydanticBase, TimeStampedModel
 
 
 def hash_password(password: str):
@@ -19,12 +17,15 @@ def hash_password(password: str):
     return bcrypt.hashpw(pw, salt)
 
 
-class User(TimeStampedModel, Model):
-    id = fields.IntField(primary_key=True)
-    first_name = fields.CharField(max_length=32, null=True)
-    last_name = fields.CharField(max_length=32, null=True)
-    email = fields.CharField(max_length=254, unique=True)
-    password = fields.CharField(max_length=128)
+class User(Base, TimeStampedModel):
+    __tablename__ = 'users'
+
+    id = Column(Integer, primary_key=True)
+    first_name = Column(String, nullable=True)
+    last_name = Column(String, nullable=True)
+    email = Column(String, nullable=False, unique=True, index=True)
+    is_active = Column(Boolean, default=True)
+    password = Column(String, nullable=False)
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
@@ -40,5 +41,13 @@ class User(TimeStampedModel, Model):
         return bcrypt.checkpw(password.encode('utf-8'), self.password.encode('utf-8'))
 
 
-UserPydanticIn = pydantic_model_creator(User, name='User', include=('email', 'first_name', 'last_name', 'password'))
-UserPydanticOut = pydantic_model_creator(User, name='UserOut', include=('id', 'email', 'created_at'))
+class UserPayload(PydanticBase):
+    email: EmailStr
+    password: str
+
+
+class UserDetail(PydanticBase):
+    id: int
+    email: EmailStr
+    first_name: Optional[str] = ''
+    last_name: Optional[str] = ''

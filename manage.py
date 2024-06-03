@@ -14,7 +14,7 @@ def migrate_db():
     """Apply database migrations"""
     import subprocess
 
-    subprocess.run(('migrations', 'upgrade', 'head'))
+    subprocess.run(('alembic', 'upgrade', 'head'))  # noqa
 
 
 @cli.command('runserver')
@@ -25,7 +25,7 @@ def runserver(
     reload: bool = True,
 ):
     """Run the API development server(uvicorn)."""
-    # migrate_db()
+    migrate_db()
     uvicorn.run(
         'src.main:api',
         host=host,

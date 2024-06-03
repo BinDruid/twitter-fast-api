@@ -45,7 +45,7 @@ target-version = 'py311'
 # I = Isort
 # B = Flake8 Bugbear
 select = ['S', 'SIM', 'C4', 'E', 'F', 'BLE', 'I', 'B', 'N', 'ERA']
-ignore = ['E501', 'DJ001', 'N806']
+ignore = ['E501', 'N802', 'N806', 'N815']
 fixable = ['I']
 
 [tool.ruff.lint.per-file-ignores]

@@ -13,4 +13,4 @@ class Mention(Base, TimeStampedModel):
     author = relationship('User', backref='mentions')
     post_id = Column(Integer, ForeignKey('posts.id', ondelete='CASCADE'))
     post = relationship('Post', backref='mentions')
-    content = Column(String, nullable=False)
+    content = Column(String(128), nullable=False)

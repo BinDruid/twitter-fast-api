@@ -14,8 +14,8 @@ class Post(Base, TimeStampedModel):
     __tablename__ = 'posts'
 
     id = Column(Integer, primary_key=True)
-    content = Column(String, nullable=False)
-    author_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'))
+    content = Column(String(128), nullable=False)
+    author_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     author = relationship('User', backref='posts')
 
     def __str__(self):

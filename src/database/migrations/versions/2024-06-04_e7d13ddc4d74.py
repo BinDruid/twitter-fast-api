@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 2d2190defb07
+Revision ID: e7d13ddc4d74
 Revises: 
-Create Date: 2024-06-04 00:30:16.553222
+Create Date: 2024-06-04 03:41:15.491429
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '2d2190defb07'
+revision: str = 'e7d13ddc4d74'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -29,19 +29,19 @@ def upgrade() -> None:
     sa.Column('password', sa.String(length=128), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id', name=op.f('users_pkey'))
     )
-    op.create_index(op.f('ix_users_email'), 'users', ['email'], unique=True)
+    op.create_index(op.f('users_email_idx'), 'users', ['email'], unique=True)
     op.create_table('followerships',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('following_id', sa.Integer(), nullable=False),
     sa.Column('follower_id', sa.Integer(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
-    sa.CheckConstraint('follower_id <> following_id', name='user_can_not_follow_themself'),
-    sa.ForeignKeyConstraint(['follower_id'], ['users.id'], ondelete='CASCADE'),
-    sa.ForeignKeyConstraint(['following_id'], ['users.id'], ondelete='CASCADE'),
-    sa.PrimaryKeyConstraint('id'),
+    sa.CheckConstraint('follower_id <> following_id', name=op.f('followerships_user_can_not_follow_themself_check')),
+    sa.ForeignKeyConstraint(['follower_id'], ['users.id'], name=op.f('followerships_follower_id_fkey'), ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['following_id'], ['users.id'], name=op.f('followerships_following_id_fkey'), ondelete='CASCADE'),
+    sa.PrimaryKeyConstraint('id', name=op.f('followerships_pkey')),
     sa.UniqueConstraint('following_id', 'follower_id', name='unique_followership_relations')
     )
     op.create_table('posts',
@@ -50,8 +50,8 @@ def upgrade() -> None:
     sa.Column('author_id', sa.Integer(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
-    sa.ForeignKeyConstraint(['author_id'], ['users.id'], ondelete='CASCADE'),
-    sa.PrimaryKeyConstraint('id')
+    sa.ForeignKeyConstraint(['author_id'], ['users.id'], name=op.f('posts_author_id_fkey'), ondelete='CASCADE'),
+    sa.PrimaryKeyConstraint('id', name=op.f('posts_pkey'))
     )
     op.create_table('likes',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -59,9 +59,9 @@ def upgrade() -> None:
     sa.Column('post_id', sa.Integer(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
-    sa.ForeignKeyConstraint(['post_id'], ['posts.id'], ondelete='CASCADE'),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
-    sa.PrimaryKeyConstraint('id')
+    sa.ForeignKeyConstraint(['post_id'], ['posts.id'], name=op.f('likes_post_id_fkey'), ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], name=op.f('likes_user_id_fkey'), ondelete='CASCADE'),
+    sa.PrimaryKeyConstraint('id', name=op.f('likes_pkey'))
     )
     op.create_table('mentions',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -70,9 +70,9 @@ def upgrade() -> None:
     sa.Column('content', sa.String(length=128), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
-    sa.ForeignKeyConstraint(['author_id'], ['users.id'], ondelete='CASCADE'),
-    sa.ForeignKeyConstraint(['post_id'], ['posts.id'], ondelete='CASCADE'),
-    sa.PrimaryKeyConstraint('id')
+    sa.ForeignKeyConstraint(['author_id'], ['users.id'], name=op.f('mentions_author_id_fkey'), ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['post_id'], ['posts.id'], name=op.f('mentions_post_id_fkey'), ondelete='CASCADE'),
+    sa.PrimaryKeyConstraint('id', name=op.f('mentions_pkey'))
     )
     # ### end Alembic commands ###
 
@@ -83,6 +83,6 @@ def downgrade() -> None:
     op.drop_table('likes')
     op.drop_table('posts')
     op.drop_table('followerships')
-    op.drop_index(op.f('ix_users_email'), table_name='users')
+    op.drop_index(op.f('users_email_idx'), table_name='users')
     op.drop_table('users')
     # ### end Alembic commands ###

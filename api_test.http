@@ -61,11 +61,11 @@ POST {{base_url}}/posts/
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-{"content": "this is a 2 test message"
+{"content": "this my first tweet"
 }
 ###
 
-GET {{base_url}}/posts/
+GET {{base_url}}/posts/bindruid/?page=1
 Accept: application/json
 Authorization: Bearer {{token}}
 

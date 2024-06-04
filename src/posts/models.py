@@ -31,7 +31,6 @@ class PostDetail(PydanticBase):
     content: str
     created_at: datetime
     updated_at: datetime
-    author: UserDetail
 
 
 class PostList(Pagination):

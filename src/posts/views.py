@@ -4,16 +4,19 @@ from starlette import status
 from src.core.pagination import paginate
 from src.database import DbSession
 from src.users.auth import CurrentUser
-
+from src.users.models import User
 from .models import Post, PostDetail, PostList, PostPayload
 
 router = APIRouter()
 
 
-@router.get('/', response_model=PostList)
-async def list_user_posts(user: CurrentUser, db_session: DbSession, page: int = 1):
-    user_posts = db_session.query(Post).filter(Post.author_id == user.id)
-    return paginate(items=user_posts, page=page)
+@router.get('/{username}/', response_model=PostList)
+async def list_user_posts(user: CurrentUser, db_session: DbSession, username: str, page: int = 1):
+    author = db_session.query(User).filter(User.username == username).one_or_none()
+    if author is None:
+        raise HTTPException(status_code=404, detail=f'User {username} not found')
+    author_posts = db_session.query(Post).filter(Post.author_id == author.id)
+    return paginate(items=author_posts, page=page)
 
 
 @router.post('/', status_code=status.HTTP_201_CREATED, response_model=PostDetail)

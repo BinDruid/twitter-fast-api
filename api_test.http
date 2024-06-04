@@ -11,7 +11,7 @@ Content-Type: application/json
 POST {{base_url}}/auth/login/
 Content-Type: application/json
 
-{"username": "bindruid",
+{"username": "druid",
   "password": "123456"
 }
 ###
@@ -61,11 +61,16 @@ POST {{base_url}}/posts/
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-{"content": "this my first tweet"
+{"content": "this my second tweet"
 }
 ###
 
-GET {{base_url}}/posts/bindruid/?page=1
+GET {{base_url}}/posts/druid/
+Accept: application/json
+Authorization: Bearer {{token}}
+
+###
+GET {{base_url}}/posts/druid/1/
 Accept: application/json
 Authorization: Bearer {{token}}
 

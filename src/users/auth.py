@@ -5,7 +5,6 @@ from starlette.requests import Request
 from starlette.status import HTTP_401_UNAUTHORIZED
 
 from src.core.middleware import AuthenticatedUser
-from src.users.models import User
 
 
 def get_current_user(request: Request) -> AuthenticatedUser:
@@ -17,7 +16,7 @@ def get_current_user(request: Request) -> AuthenticatedUser:
     return request.state.user
 
 
-CurrentUser = Annotated[User, Depends(get_current_user)]
+CurrentUser = Annotated[AuthenticatedUser, Depends(get_current_user)]
 
 InvalidCredentialException = HTTPException(
     status_code=HTTP_401_UNAUTHORIZED, detail=[{'msg': 'Could not validate credentials'}]

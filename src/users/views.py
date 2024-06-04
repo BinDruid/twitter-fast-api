@@ -5,7 +5,7 @@ from src.core.pagination import paginate
 from src.database.core import DbSession
 
 from .auth import CurrentUser, InvalidCredentialException
-from .models import Followership, FollowerShipPayload, User, UserDetail, UserList, UserPayload, hash_password
+from .models import Followership, FollowerShipPayload, User, UserCreatePayload, UserDetail, UserList, UserLoginPayload
 
 auth_router = APIRouter()
 user_router = APIRouter()
@@ -80,16 +80,15 @@ async def unfollow_user(user: CurrentUser, db_session: DbSession, following_id: 
 
 
 @auth_router.post('/', response_model=UserDetail, status_code=status.HTTP_201_CREATED)
-async def create_user(payload: UserPayload, db_session: DbSession):
-    hashed_password = hash_password(payload.password).decode('utf-8')
-    user = User(email=payload.email, password=hashed_password)
+async def create_user(payload: UserCreatePayload, db_session: DbSession):
+    user = User(email=payload.email, password=payload.password)
     db_session.add(user)
     db_session.commit()
     return user
 
 
 @auth_router.post('/login/')
-async def login_user(payload: UserPayload, db_session: DbSession):
+async def login_user(payload: UserLoginPayload, db_session: DbSession):
     user = db_session.query(User).filter(User.email == payload.email).one_or_none()
     if user is None:
         return InvalidCredentialException

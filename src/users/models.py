@@ -3,6 +3,7 @@ from typing import Optional
 
 import bcrypt
 from jose import jwt
+from pydantic import field_validator
 from pydantic.networks import EmailStr
 from sqlalchemy import Boolean, CheckConstraint, Column, ForeignKey, Integer, String, UniqueConstraint
 
@@ -56,7 +57,18 @@ class Followership(Base, TimeStampedModel):
         return f'{self.following_id}->{self.follower_id}'
 
 
-class UserPayload(PydanticBase):
+class UserCreatePayload(PydanticBase):
+    email: EmailStr
+    password: str
+
+    @field_validator('password')
+    @classmethod
+    def make_hash(cls, password: str) -> str:
+        hashed_password = hash_password(password)
+        return hashed_password.decode('utf-8')
+
+
+class UserLoginPayload(PydanticBase):
     email: EmailStr
     password: str
 

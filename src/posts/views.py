@@ -38,7 +38,7 @@ async def update_user_post(user: CurrentUser, db_session: DbSession, post_id: in
 async def delete_user_post(user: CurrentUser, db_session: DbSession, post_id: int):
     user_post = db_session.query(Post).filter(Post.id == post_id, Post.author_id == user.id).one_or_none()
     if not user_post:
-        raise HTTPException(status_code=404, detail=f"Post {post_id} not found")
+        raise HTTPException(status_code=404, detail=f'Post {post_id} not found')
     db_session.delete(user_post)
     db_session.commit()
-    return {'message': f"Deleted post {post_id}"}
+    return {'message': f'Deleted post {post_id}'}

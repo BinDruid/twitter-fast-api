@@ -15,7 +15,7 @@ user_router = APIRouter()
 async def get_user_profile(user: CurrentUser, db_session: DbSession):
     user_profile = db_session.query(User).filter(User.id == user.id).one_or_none()
     if not user_profile:
-        raise HTTPException(status_code=404, detail=f"User {user.username} not found")
+        raise HTTPException(status_code=404, detail=f'User {user.username} not found')
     return user_profile
 
 
@@ -23,10 +23,10 @@ async def get_user_profile(user: CurrentUser, db_session: DbSession):
 async def delete_user(user: CurrentUser, db_session: DbSession):
     user_profile = db_session.query(User).filter(User.id == user.id).one_or_none()
     if not user_profile:
-        raise HTTPException(status_code=404, detail=f"User {user.username} not found")
+        raise HTTPException(status_code=404, detail=f'User {user.username} not found')
     db_session.delete(user_profile)
     db_session.commit()
-    return {'message': f"Deleted user {user.username}"}
+    return {'message': f'Deleted user {user.username}'}
 
 
 @user_router.get('/me/followers/', response_model=UserList)
@@ -62,7 +62,7 @@ async def follow_user(user: CurrentUser, db_session: DbSession, following: Follo
     followership = Followership(follower_id=user.id, following_id=following.user_id)
     db_session.add(followership)
     db_session.commit()
-    return {'message': f"user #{user.id} now is following user #{following.user_id}"}
+    return {'message': f'user #{user.id} now is following user #{following.user_id}'}
 
 
 @user_router.delete('/me/followings/{following_id}/', status_code=status.HTTP_204_NO_CONTENT)

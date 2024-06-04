@@ -3,6 +3,7 @@ POST {{base_url}}/auth/
 Content-Type: application/json
 
 {"email": "a.abharya@gmail.com",
+  "username": "druid",
   "password": "123456"
 }
 ###
@@ -10,7 +11,7 @@ Content-Type: application/json
 POST {{base_url}}/auth/login/
 Content-Type: application/json
 
-{"email": "a.abharya@gmail.com",
+{"username": "bindruid",
   "password": "123456"
 }
 ###

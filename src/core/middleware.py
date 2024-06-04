@@ -68,9 +68,7 @@ class LoggingMiddleware(BaseHTTPMiddleware):
         url = request.url
         user = request.state.user.id
         with open(f'{settings.PATHS.ROOT_DIR}/logs/requests.log', mode='a') as request_logs:
-            log_message = (
-                f'[{start_time}] [User #{user}] [{method_name}] {url}\n'
-            )
+            log_message = f'[{start_time}] [User #{user}] [{method_name}] {url}\n'
             request_logs.write(log_message)
         response = await call_next(request)
         process_time = datetime.datetime.utcnow() - start_time

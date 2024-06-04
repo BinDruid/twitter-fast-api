@@ -7,7 +7,6 @@ from sqlalchemy.orm import relationship
 from src.core.pagination import Pagination
 from src.database.core import Base, PydanticBase
 from src.database.mixin_models import TimeStampedModel
-from src.users.models import UserDetail
 
 
 class Post(Base, TimeStampedModel):

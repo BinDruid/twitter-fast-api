@@ -5,6 +5,7 @@ from src.core.pagination import paginate
 from src.database import DbSession
 from src.users.auth import CurrentUser
 from src.users.models import User
+
 from .models import Post, PostDetail, PostList, PostPayload
 
 router = APIRouter()

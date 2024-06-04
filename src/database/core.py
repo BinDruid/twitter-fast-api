@@ -10,10 +10,11 @@ from sqlalchemy.orm import Session, sessionmaker
 
 from src.core.config import settings
 
+db_url = str(settings.DB_URL)
+engine = create_engine(db_url)
+
 
 def get_db_session() -> Session:
-    db_url = str(settings.DB_URL)
-    engine = create_engine(db_url)
     session_class = sessionmaker(bind=engine)
     session = session_class()
     return session
@@ -32,6 +33,7 @@ POSTGRES_INDEXES_NAMING_CONVENTION = {
 metadata = MetaData(naming_convention=POSTGRES_INDEXES_NAMING_CONVENTION)
 
 Base = declarative_base(metadata=metadata)
+Base.metadata.create_all(engine)
 
 
 class PydanticBase(BaseModel):

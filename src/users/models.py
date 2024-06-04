@@ -23,6 +23,7 @@ class User(Base, TimeStampedModel):
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True)
+    username = Column(String(32), unique=True, index=True)
     first_name = Column(String(256), nullable=True)
     last_name = Column(String(256), nullable=True)
     email = Column(String(256), nullable=False, unique=True, index=True)
@@ -36,7 +37,7 @@ class User(Base, TimeStampedModel):
     def token(self):
         now = datetime.utcnow()
         exp = (now + timedelta(seconds=settings.JWT_EXP)).timestamp()
-        data = {'exp': exp, 'email': self.email, 'id': self.id}
+        data = {'exp': exp, 'username': self.username, 'id': self.id}
         return jwt.encode(data, settings.JWT_SECRET, algorithm=settings.JWT_ALG)
 
     def check_password(self, password):
@@ -58,6 +59,7 @@ class Followership(Base, TimeStampedModel):
 
 
 class UserCreatePayload(PydanticBase):
+    username: str
     email: EmailStr
     password: str
 
@@ -69,12 +71,13 @@ class UserCreatePayload(PydanticBase):
 
 
 class UserLoginPayload(PydanticBase):
-    email: EmailStr
+    username: str
     password: str
 
 
 class UserDetail(PydanticBase):
     id: int
+    username: str
     email: EmailStr
     first_name: Optional[str] = ''
     last_name: Optional[str] = ''

@@ -1,3 +1,4 @@
+from collections import namedtuple
 from typing import Annotated
 
 from fastapi import Depends, HTTPException
@@ -11,8 +12,10 @@ from src.core.config import settings
 from src.core.logging import logger
 from src.users.models import User
 
+UserInfo = namedtuple('UserInfo', ['id', 'username'])
 
-def get_current_user(request: Request):
+
+def get_current_user(request: Request) -> UserInfo:
     authorization: str = request.headers.get('Authorization')
     scheme, param = get_authorization_scheme_param(authorization)
     if not authorization or scheme.lower() != 'bearer':
@@ -33,7 +36,7 @@ def get_current_user(request: Request):
             status_code=HTTP_401_UNAUTHORIZED,
             detail=[{'msg': 'Could not validate credentials'}],
         ) from None
-    return {'id': data['id'], 'email': data['email']}
+    return UserInfo(data['id'], data['username'])
 
 
 CurrentUser = Annotated[User, Depends(get_current_user)]

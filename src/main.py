@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 from src.core.config import app_configs
-from src.core.middleware import ExceptionMiddleware, LoggingMiddleware
+from src.core.middleware import AuthenticationMiddleware, ExceptionMiddleware, LoggingMiddleware
 from src.core.startup import startup
 from src.routes import api_router
 
@@ -16,4 +16,5 @@ def get_application() -> FastAPI:
 api = get_application()
 
 api.add_middleware(LoggingMiddleware)
+api.add_middleware(AuthenticationMiddleware)
 api.add_middleware(ExceptionMiddleware)

@@ -1,9 +1,7 @@
-from __future__ import annotations
-
 from pathlib import Path
 from typing import Any
 
-from pydantic import AnyHttpUrl, HttpUrl, PostgresDsn
+from pydantic import PostgresDsn
 from pydantic_settings import BaseSettings
 
 try:
@@ -33,8 +31,6 @@ class Settings(BaseSettings):
     ENVIRONMENT: Environment = 'dev'
     SECRET_KEY: str
     DEBUG: bool = True
-    SERVER_HOST: AnyHttpUrl = 'http://localhost:8000'  # type:ignore
-    SENTRY_DSN: HttpUrl | None = None
     DB_URL: PostgresDsn
     PAGINATION_PER_PAGE: int = 20
     JWT_SECRET: str
@@ -48,7 +44,7 @@ class Settings(BaseSettings):
 settings = Settings()
 
 app_configs: dict[str, Any] = {
-    'title': 'twitter_api',
+    'title': 'Twitter API',
     'description': 'Minimal twitter api built with FastAPI',
     'debug': settings.DEBUG,
     'root_path': '/api/v1',

@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException
 from starlette import status
 
-from src.core.pagination import paginate
-from src.database.core import DbSession
+from api.core.pagination import paginate
+from api.database import DbSession
 
 from .auth import CurrentUser, InvalidCredentialException
 from .depends import FollowerByID, FollowingByID, UserByID

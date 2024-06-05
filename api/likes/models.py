@@ -1,8 +1,8 @@
 from sqlalchemy import Column, ForeignKey, Integer
 from sqlalchemy.orm import relationship
 
-from src.database.core import Base
-from src.database.mixin_models import TimeStampedModel
+from api.database.base_models import TimeStampedModel
+from api.database.configs import Base
 
 
 class Like(Base, TimeStampedModel):

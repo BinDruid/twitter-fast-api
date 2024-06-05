@@ -2,7 +2,7 @@ from typing import Annotated
 
 from fastapi import Depends, HTTPException
 
-from src.database.core import DbSession
+from api.database import DbSession
 
 from .models import Followership, User
 

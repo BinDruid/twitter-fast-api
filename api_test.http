@@ -123,13 +123,13 @@ Authorization: Bearer {{token_1}}
 ###
 
 ###
-POST {{base_url}}/likes/2/
+POST {{base_url}}/engagements/likes/2/
 Accept: application/json
 Authorization: Bearer {{token_1}}
 ###
 
 ###
-DELETE {{base_url}}/likes/2/
+DELETE {{base_url}}/engagements/likes/2/
 Accept: application/json
 Authorization: Bearer {{token_1}}
 ###

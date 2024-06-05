@@ -1,13 +1,13 @@
-# fast_micro
+# Twitter Minimal API
 
 
 
 
 ## Prerequisites
 
-- `Python 3.9+`
-- `Poetry 1.2+`
-- `Postgresql 10+`
+- `Python 3.11`
+- `Pipenv`
+- `Postgresql 13`
 
 
 ## Development
@@ -16,54 +16,36 @@
 
 ```shell
 DEBUG=True
-SERVER_HOST=http://localhost:8000
-SECRET_KEY=qwtqwubYA0pN1GMmKsFKHMw_WCbboJvdTAgM9Fq-UyM
-SMTP_PORT=1025
-SMTP_HOST=localhost
-SMTP_TLS=False
-BACKEND_CORS_ORIGINS=["http://localhost"]
-DATABASE_URI=postgres://postgres:password@localhost/fast_micro
-DEFAULT_FROM_EMAIL=fast_micro@gmail.com
-REDIS_URL=redis://localhost
-FIRST_SUPERUSER_EMAIL=admin@mail.com
-FIRST_SUPERUSER_PASSWORD=admin
+SECRET_KEY=super_secret_key
+DB_URL=postgres://postgres:password@localhost/database_name
+PAGINATION_PER_PAGE=20
+JWT_SECRET=secret_key
+JWT_ALG=HS256
+JWT_EXP=86400
 ```
 
 ### Database setup
 
+Run database server
+
+```shell
+docker compose -f ./docker-compose-dev.yml up
+```
+
 Create your first migration
 
 ```shell
-aerich init-database
-```
-
-Adding new migrations.
-
-```shell
-aerich migrate --name <migration_name>
+alembic revision --autogenerate
 ```
 
 Upgrading the database when new migrations are created.
 
 ```shell
-aerich upgrade
+alembic upgrade head
 ```
 
 ### Run the fastapi app
 
 ```shell
-python manage.py work
+python manage.py runserver
 ```
-
-### Cli
-
-There is a manage.py file at the root of the project, it contains a basic cli to hopefully
-help you manage your project more easily. To get all available commands type this:
-
-```shell
-python manage.py --help
-```
-
-## Credits
-
-This package was created with [Cookiecutter](https://github.com/cookiecutter/cookiecutter) and the [cookiecutter-fastapi](https://github.com/tobi-de/cookiecutter-fastapi) project template.

@@ -2,7 +2,7 @@ from sqlalchemy.exc import ProgrammingError
 from sqlalchemy.orm.query import Query
 from sqlalchemy_filters import apply_pagination
 
-from src.database import PydanticBase
+from api.database import PydanticBase
 
 from .config import settings
 from .logging import logger

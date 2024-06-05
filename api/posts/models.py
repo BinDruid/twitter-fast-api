@@ -5,9 +5,8 @@ from pydantic import Field
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
-from src.core.pagination import Pagination
-from src.database.core import Base, PydanticBase
-from src.database.mixin_models import TimeStampedModel
+from api.core.pagination import Pagination
+from api.database import Base, PydanticBase, TimeStampedModel
 
 
 class Post(Base, TimeStampedModel):

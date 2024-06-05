@@ -1,9 +1,9 @@
 from fastapi import APIRouter, HTTPException
 from starlette import status
 
-from src.core.pagination import paginate
-from src.database import DbSession
-from src.users.auth import CurrentUser
+from api.core.pagination import paginate
+from api.database import DbSession
+from api.users.auth import CurrentUser
 
 from . import services
 from .depends import AuthorByName, PostByAuthor, PostByID

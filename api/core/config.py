@@ -20,7 +20,7 @@ class Environment(StrEnum):
 
 class Paths:
     ROOT_DIR: Path = Path(__file__).parent.parent.parent
-    BASE_DIR: Path = ROOT_DIR / 'src'
+    BASE_DIR: Path = ROOT_DIR / 'api'
 
 
 class Settings(BaseSettings):

@@ -2,9 +2,9 @@ from typing import Annotated
 
 from fastapi import Depends, HTTPException
 
-from src.database.core import DbSession
-from src.users.depends import get_user_by_name
-from src.users.models import User
+from api.database import DbSession
+from api.users.depends import get_user_by_name
+from api.users.models import User
 
 from .models import Post
 

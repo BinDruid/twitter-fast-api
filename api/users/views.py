@@ -4,9 +4,10 @@ from starlette import status
 from api.core.pagination import paginate
 from api.database import DbSession
 
+from . import services
 from .auth import CurrentUser, InvalidCredentialException
 from .depends import FollowerByID, FollowingByID, UserByID
-from .models import Followership, FollowerShipPayload, User, UserCreatePayload, UserDetail, UserList, UserLoginPayload
+from .models import FollowerShipPayload, User, UserCreatePayload, UserDetail, UserList, UserLoginPayload
 
 auth_router = APIRouter()
 user_router = APIRouter()
@@ -21,15 +22,13 @@ def get_user_profile(db_session: DbSession, user: UserByID):
 def delete_user(current_user: CurrentUser, db_session: DbSession, user: UserByID):
     if current_user.id != user.id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
-    db_session.delete(user)
-    db_session.commit()
+    services.delete_user(db_session=db_session, user=user)
     return {'message': f'Deleted user {user.username}'}
 
 
 @user_router.get('/{user_id}/followers/', response_model=UserList)
 def get_user_followers(db_session: DbSession, user: UserByID, page: int = 1):
-    subquery = db_session.query(Followership.follower_id).filter(Followership.following_id == user.id).subquery()
-    followers = db_session.query(User).filter(User.id.in_(subquery))
+    followers = services.get_followers_by_user(db_session=db_session, user=user)
     return paginate(items=followers, page=page)
 
 
@@ -39,15 +38,13 @@ def remove_user_from_followers(
 ):
     if current_user.id != user.id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
-    db_session.delete(follower)
-    db_session.commit()
+    services.remove_user_from_followers(db_session=db_session, follower=follower)
     return {'message': f'User #{follower.follower_id} removed from followers'}
 
 
 @user_router.get('/{user_id}/followings/', response_model=UserList)
 def get_user_followings(db_session: DbSession, user: UserByID, page: int = 1):
-    subquery = db_session.query(Followership.following_id).filter(Followership.follower_id == user.id).subquery()
-    followings = db_session.query(User).filter(User.id.in_(subquery))
+    followings = services.get_followings_by_user(db_session=db_session, user=user)
     return paginate(items=followings, page=page)
 
 
@@ -55,9 +52,7 @@ def get_user_followings(db_session: DbSession, user: UserByID, page: int = 1):
 def follow_user(current_user: CurrentUser, db_session: DbSession, user: UserByID, following: FollowerShipPayload):
     if current_user.id != user.id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
-    followership = Followership(follower_id=user.id, following_id=following.user_id)
-    db_session.add(followership)
-    db_session.commit()
+    services.follow_user(db_session=db_session, user=user, following=following)
     return {'message': f'User #{user.id} now is following user #{following.user_id}'}
 
 
@@ -65,17 +60,14 @@ def follow_user(current_user: CurrentUser, db_session: DbSession, user: UserByID
 def unfollow_user(current_user: CurrentUser, db_session: DbSession, user: UserByID, following: FollowingByID):
     if user.id != user.id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
-    db_session.delete(following)
-    db_session.commit()
+    services.unfollow_user(db_session=db_session, following=following)
     return {'message': f'Unfollowed user #{following.following_id}'}
 
 
 @auth_router.post('/', response_model=UserDetail, status_code=status.HTTP_201_CREATED)
 def create_user(db_session: DbSession, payload: UserCreatePayload):
-    user = User(email=payload.email, username=payload.username, password=payload.password)
-    db_session.add(user)
-    db_session.commit()
-    return user
+    new_user = services.create_user(db_session=db_session, context=payload)
+    return new_user
 
 
 @auth_router.post('/login/')

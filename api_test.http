@@ -2,8 +2,8 @@
 POST {{base_url}}/auth/
 Content-Type: application/json
 
-{"email": "a.abharya@gmail.com",
-  "username": "druid",
+{"email": "abharya@gmail.com",
+  "username": "bindruid",
   "password": "123456"
 }
 ###
@@ -11,55 +11,57 @@ Content-Type: application/json
 POST {{base_url}}/auth/login/
 Content-Type: application/json
 
-{"username": "druid",
+{"username": "bindruid",
   "password": "123456"
 }
 ###
 
-GET {{base_url}}/users/me/
+GET {{base_url}}/users/profile/1/
 Accept: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{token_1}}
 
 ###
-DELETE {{base_url}}/users/me/
+DELETE {{base_url}}/users/profile/1/
 Accept: application/json
-Authorization: Bearer {{token}}
-###
-
-###
-GET {{base_url}}/users/me/followings/
-Accept: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{token_2}}
 ###
 
 ###
-GET {{base_url}}/users/me/followers/
+GET {{base_url}}/users/2/followers/
 Accept: application/json
-Authorization: Bearer {{token}}
-###
-
-DELETE {{base_url}}/users/me/followers/1/
-Accept: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{token_1}}
 ###
 
 ###
-POST {{base_url}}/users/me/followings/
+GET {{base_url}}/users/1/followings/
 Accept: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{token_1}}
+###
 
-{"user_id": 1
+###
+POST {{base_url}}/users/1/followings/
+Accept: application/json
+Authorization: Bearer {{token_1}}
+
+{"user_id": 2
 }
 ###
 
-DELETE {{base_url}}/users/me/followings/2/
+###
+DELETE {{base_url}}/users/2/followers/1/
 Accept: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{token_2}}
+###
+
+
+DELETE {{base_url}}/users/1/followings/2/
+Accept: application/json
+Authorization: Bearer {{token_1}}
 ###
 
 POST {{base_url}}/posts/
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{token_1}}
 
 {"content": "this my third tweet"
 }
@@ -68,24 +70,24 @@ Authorization: Bearer {{token}}
 
 GET {{base_url}}/posts/druid/
 Accept: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{token_1}}
 
 ###
 GET {{base_url}}/posts/druid/1/
 Accept: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{token_1}}
 
 ###
 GET {{base_url}}/posts/druid/1/mentions/
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{token_1}}
 
 ###
 
 ###
 POST {{base_url}}/posts/druid/1/mentions/
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{token_1}}
 
 {"content": "this is my second mention"
 }
@@ -94,13 +96,13 @@ Authorization: Bearer {{token}}
 ###
 GET {{base_url}}/posts/druid/1/quotes/
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization:8 Bearer {{token_1}}
 ###
 
 ###
 POST {{base_url}}/posts/druid/1/quotes/
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{token_1}}
 
 {"content": "this is my third quote"
 }
@@ -109,7 +111,7 @@ Authorization: Bearer {{token}}
 
 PATCH {{base_url}}/posts/1/
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{token_1}}
 
 {"content": "this is first message"
 }
@@ -117,5 +119,5 @@ Authorization: Bearer {{token}}
 ###
 DELETE {{base_url}}/posts/2/
 Accept: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{token_1}}
 ###

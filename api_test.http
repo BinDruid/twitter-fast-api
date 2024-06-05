@@ -27,7 +27,7 @@ Authorization: Bearer {{token_2}}
 ###
 
 ###
-GET {{base_url}}/users/2/followers/
+GET {{base_url}}/users/1/followers/
 Accept: application/json
 Authorization: Bearer {{token_1}}
 ###
@@ -39,11 +39,11 @@ Authorization: Bearer {{token_1}}
 ###
 
 ###
-POST {{base_url}}/users/1/followings/
+POST {{base_url}}/users/2/followings/
 Accept: application/json
-Authorization: Bearer {{token_1}}
+Authorization: Bearer {{token_2}}
 
-{"user_id": 2
+{"user_id": 1
 }
 ###
 

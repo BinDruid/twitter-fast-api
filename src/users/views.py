@@ -80,7 +80,7 @@ async def unfollow_user(user: CurrentUser, db_session: DbSession, following_id: 
 
 
 @auth_router.post('/', response_model=UserDetail, status_code=status.HTTP_201_CREATED)
-async def create_user(payload: UserCreatePayload, db_session: DbSession):
+async def create_user(db_session: DbSession, payload: UserCreatePayload):
     user = User(email=payload.email, username=payload.username, password=payload.password)
     db_session.add(user)
     db_session.commit()

@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 9e2556a9d80d
+Revision ID: f16762ddc4c9
 Revises: 
-Create Date: 2024-06-04 13:47:57.013103
+Create Date: 2024-06-04 23:38:05.901236
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '9e2556a9d80d'
+revision: str = 'f16762ddc4c9'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -50,9 +50,11 @@ def upgrade() -> None:
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('content', sa.String(length=128), nullable=False),
     sa.Column('author_id', sa.Integer(), nullable=False),
+    sa.Column('quoted_post_id', sa.Integer(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['author_id'], ['users.id'], name=op.f('posts_author_id_fkey'), ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['quoted_post_id'], ['posts.id'], name=op.f('posts_quoted_post_id_fkey')),
     sa.PrimaryKeyConstraint('id', name=op.f('posts_pkey'))
     )
     op.create_table('likes',
@@ -67,13 +69,12 @@ def upgrade() -> None:
     )
     op.create_table('mentions',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('author_id', sa.Integer(), nullable=True),
-    sa.Column('post_id', sa.Integer(), nullable=True),
-    sa.Column('content', sa.String(length=128), nullable=False),
+    sa.Column('mention_id', sa.Integer(), nullable=False),
+    sa.Column('original_post_id', sa.Integer(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
-    sa.ForeignKeyConstraint(['author_id'], ['users.id'], name=op.f('mentions_author_id_fkey'), ondelete='CASCADE'),
-    sa.ForeignKeyConstraint(['post_id'], ['posts.id'], name=op.f('mentions_post_id_fkey'), ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['mention_id'], ['posts.id'], name=op.f('mentions_mention_id_fkey')),
+    sa.ForeignKeyConstraint(['original_post_id'], ['posts.id'], name=op.f('mentions_original_post_id_fkey')),
     sa.PrimaryKeyConstraint('id', name=op.f('mentions_pkey'))
     )
     # ### end Alembic commands ###

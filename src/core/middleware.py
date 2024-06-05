@@ -67,12 +67,8 @@ class LoggingMiddleware(BaseHTTPMiddleware):
         method_name = request.method.upper()
         url = request.url
         user = request.state.user.id
-        query_params = request.query_params
-        path_params = request.path_params
         with open(f'{settings.PATHS.ROOT_DIR}/logs/requests.log', mode='a') as request_logs:
-            log_message = (
-                f'[{start_time}] [{method_name}] {url} => user #{user} query: {query_params}, path: {path_params}\n'
-            )
+            log_message = f'[{start_time}] [User #{user}] [{method_name}] {url}\n'
             request_logs.write(log_message)
         response = await call_next(request)
         process_time = datetime.datetime.utcnow() - start_time

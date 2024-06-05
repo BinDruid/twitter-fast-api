@@ -121,3 +121,16 @@ DELETE {{base_url}}/posts/2/
 Accept: application/json
 Authorization: Bearer {{token_1}}
 ###
+
+###
+POST {{base_url}}/posts/2/likes/
+Accept: application/json
+Authorization: Bearer {{token_1}}
+###
+
+###
+DELETE {{base_url}}/posts/2/likes/
+Accept: application/json
+Authorization: Bearer {{token_1}}
+###
+

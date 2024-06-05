@@ -1,7 +1,8 @@
 from datetime import datetime
+from typing import Optional
 
 from pydantic import Field
-from sqlalchemy import Column, ForeignKey, Integer, String, Boolean
+from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
 from src.core.pagination import Pagination
@@ -16,13 +17,19 @@ class Post(Base, TimeStampedModel):
     content = Column(String(128), nullable=False)
     author_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     author = relationship('User', backref='posts')
-    original_post_id = Column(Integer, ForeignKey('posts.id'), nullable=True)
-    is_quote = Column(Boolean, default=False)
-    is_mention = Column(Boolean, default=False)
-
+    quoted_post_id = Column(Integer, ForeignKey('posts.id'), nullable=True)
+    quoted_post = relationship('Post', remote_side='Post.id')
 
     def __str__(self):
         return f'{self.author}#{self.id}'
+
+
+class Mention(Base, TimeStampedModel):
+    __tablename__ = 'mentions'
+
+    id = Column(Integer, primary_key=True)
+    mention_id = Column(Integer, ForeignKey('posts.id'), nullable=False)
+    original_post_id = Column(Integer, ForeignKey('posts.id'), nullable=False)
 
 
 class PostPayload(PydanticBase):
@@ -36,5 +43,13 @@ class PostDetail(PydanticBase):
     updated_at: datetime
 
 
+class PostDetailWithQuote(PostDetail):
+    quoted_post: Optional[PostDetail]
+
+
 class PostList(Pagination):
     items: list[PostDetail] = []
+
+
+class PostWithQuoteList(Pagination):
+    items: list[PostDetailWithQuote] = []

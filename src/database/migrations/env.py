@@ -6,7 +6,7 @@ from sqlalchemy import pool
 from alembic import context
 from src.core.config import settings
 from src.users.models import User, Followership
-from src.posts.models import Post
+from src.posts.models import Post, Mention
 from src.likes.models import Like
 from src.database.core import Base
 # this is the Alembic Config object, which provides

@@ -61,8 +61,9 @@ POST {{base_url}}/posts/
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-{"content": "this my second tweet"
+{"content": "this my third tweet"
 }
+
 ###
 
 GET {{base_url}}/posts/druid/
@@ -75,11 +76,42 @@ Accept: application/json
 Authorization: Bearer {{token}}
 
 ###
-PATCH {{base_url}}/posts/2/
+GET {{base_url}}/posts/druid/1/mentions/
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-{"content": "this is a updated 1515 message"
+###
+
+###
+POST {{base_url}}/posts/druid/1/mentions/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{"content": "this is my second mention"
+}
+###
+
+###
+GET {{base_url}}/posts/druid/1/quotes/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+###
+
+###
+POST {{base_url}}/posts/druid/1/quotes/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{"content": "this is my third quote"
+}
+###
+
+
+PATCH {{base_url}}/posts/1/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{"content": "this is first message"
 }
 
 ###

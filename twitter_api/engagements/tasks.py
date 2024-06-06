@@ -1,6 +1,6 @@
-from api.core.logging import logger
-from api.database.depends import get_db_session
-from api.posts.models import Post
+from twitter_api.core.logging import logger
+from twitter_api.database.depends import get_db_session
+from twitter_api.posts.models import Post
 
 from .models import View
 

@@ -4,7 +4,7 @@ from fastapi import Depends, HTTPException
 from starlette.requests import Request
 from starlette.status import HTTP_401_UNAUTHORIZED
 
-from api.core.middleware import AuthenticatedUser
+from twitter_api.core.middleware import AuthenticatedUser
 
 
 def get_current_user(request: Request) -> AuthenticatedUser:

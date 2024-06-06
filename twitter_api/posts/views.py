@@ -1,10 +1,10 @@
 from fastapi import APIRouter, BackgroundTasks, HTTPException
 from starlette import status
 
-from api.core.pagination import paginate
-from api.database import DbSession
-from api.engagements.tasks import increase_post_view_count
-from api.users.auth import CurrentUser
+from twitter_api.core.pagination import paginate
+from twitter_api.database import DbSession
+from twitter_api.engagements.tasks import increase_post_view_count
+from twitter_api.users.auth import CurrentUser
 
 from . import services
 from .depends import AuthorByName, PostByAuthor, PostByID

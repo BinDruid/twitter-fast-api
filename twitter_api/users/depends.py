@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import Depends, HTTPException
 from starlette import status
 
-from api.database import DbSession
+from twitter_api.database import DbSession
 
 from .models import Followership, User
 

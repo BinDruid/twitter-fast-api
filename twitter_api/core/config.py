@@ -20,7 +20,7 @@ class Environment(StrEnum):
 
 class Paths:
     ROOT_DIR: Path = Path(__file__).parent.parent.parent
-    BASE_DIR: Path = ROOT_DIR / 'api'
+    BASE_DIR: Path = ROOT_DIR / 'twitter_api'
 
 
 class Settings(BaseSettings):
@@ -45,7 +45,7 @@ settings = Settings()
 
 app_configs: dict[str, Any] = {
     'title': 'Twitter API',
-    'description': 'Minimal twitter api built with FastAPI',
+    'description': 'Minimal twitter twitter_api built with FastAPI',
     'debug': settings.DEBUG,
     'root_path': '/api/v1',
     'swagger_ui_parameters': {'defaultModelsExpandDepth': -1},

@@ -3,9 +3,9 @@ from typing import Annotated
 from fastapi import Depends, HTTPException
 from starlette import status
 
-from api.database import DbSession
-from api.users.depends import get_user_by_name
-from api.users.models import User
+from twitter_api.database import DbSession
+from twitter_api.users.depends import get_user_by_name
+from twitter_api.users.models import User
 
 from .models import Post
 

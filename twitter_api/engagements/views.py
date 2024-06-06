@@ -1,9 +1,9 @@
 from fastapi import APIRouter, HTTPException
 from starlette import status
 
-from api.database import DbSession
-from api.posts.depends import PostByID
-from api.users.auth import CurrentUser
+from twitter_api.database import DbSession
+from twitter_api.posts.depends import PostByID
+from twitter_api.users.auth import CurrentUser
 
 from . import services
 from .models import Like

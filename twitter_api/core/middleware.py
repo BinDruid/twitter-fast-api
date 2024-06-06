@@ -9,7 +9,7 @@ from pydantic import BaseModel, ValidationError
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 from starlette.requests import Request
 
-from api.core.config import settings
+from twitter_api.core.config import settings
 
 from .logging import logger
 

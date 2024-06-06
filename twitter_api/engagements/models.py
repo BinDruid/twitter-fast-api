@@ -1,6 +1,6 @@
 from sqlalchemy import Column, ForeignKey, Integer, UniqueConstraint
 
-from api.database import Base, TimeStampedModel
+from twitter_api.database import Base, TimeStampedModel
 
 
 class Like(Base, TimeStampedModel):

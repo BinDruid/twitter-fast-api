@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
-from api.posts.models import Post
-from api.users.models import User
+from twitter_api.posts.models import Post
+from twitter_api.users.models import User
 
 from .models import Like
 

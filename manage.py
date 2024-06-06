@@ -24,7 +24,7 @@ def runserver(
     """Run the API development server(uvicorn)."""
     migrate_db()
     uvicorn.run(
-        'api.main:api',
+        'twitter_api.main:api',
         host=host,
         port=port,
         log_level=log_level,

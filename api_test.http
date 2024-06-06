@@ -2,8 +2,8 @@
 POST {{base_url}}/auth/
 Content-Type: application/json
 
-{"email": "abharya@gmail.com",
-  "username": "bindruid",
+{"email": "a.abharya@gmail.com",
+  "username": "druid",
   "password": "123456"
 }
 ###
@@ -11,7 +11,7 @@ Content-Type: application/json
 POST {{base_url}}/auth/login/
 Content-Type: application/json
 
-{"username": "bindruid",
+{"username": "druid",
   "password": "123456"
 }
 ###
@@ -39,11 +39,11 @@ Authorization: Bearer {{token_1}}
 ###
 
 ###
-POST {{base_url}}/users/2/followings/
+POST {{base_url}}/users/1/followings/
 Accept: application/json
-Authorization: Bearer {{token_2}}
+Authorization: Bearer {{token_1}}
 
-{"user_id": 1
+{"user_id": 2
 }
 ###
 
@@ -61,9 +61,9 @@ Authorization: Bearer {{token_1}}
 
 POST {{base_url}}/posts/
 Content-Type: application/json
-Authorization: Bearer {{token_1}}
+Authorization: Bearer {{token_2}}
 
-{"content": "this my third tweet"
+{"content": "this my 1 tweet"
 }
 
 ###
@@ -73,19 +73,19 @@ Accept: application/json
 Authorization: Bearer {{token_1}}
 
 ###
-GET {{base_url}}/posts/druid/1/
+GET {{base_url}}/posts/druid/4/
 Accept: application/json
 Authorization: Bearer {{token_1}}
 
 ###
-GET {{base_url}}/posts/druid/1/mentions/
+GET {{base_url}}/posts/druid/2/mentions/
 Content-Type: application/json
 Authorization: Bearer {{token_1}}
 
 ###
 
 ###
-POST {{base_url}}/posts/druid/1/mentions/
+POST {{base_url}}/posts/druid/2/mentions/
 Content-Type: application/json
 Authorization: Bearer {{token_1}}
 

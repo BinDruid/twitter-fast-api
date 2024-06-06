@@ -48,5 +48,5 @@ app_configs: dict[str, Any] = {
     'description': 'Minimal twitter api built with FastAPI',
     'debug': settings.DEBUG,
     'root_path': '/api/v1',
-    'swagger_ui_parameters': {'defaultModelsExpandDepth': -1}
+    'swagger_ui_parameters': {'defaultModelsExpandDepth': -1},
 }

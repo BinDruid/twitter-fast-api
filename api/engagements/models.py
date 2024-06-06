@@ -11,6 +11,7 @@ class Like(Base, TimeStampedModel):
     user_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     post_id = Column(Integer, ForeignKey('posts.id', ondelete='CASCADE'), nullable=False)
 
+
 class Bookmark(Base, TimeStampedModel):
     __tablename__ = 'bookmarks'
     __table_args__ = (UniqueConstraint('user_id', 'post_id', name='unique_bookmark_for_user_post_relations'),)
@@ -18,6 +19,7 @@ class Bookmark(Base, TimeStampedModel):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     post_id = Column(Integer, ForeignKey('posts.id', ondelete='CASCADE'), nullable=False)
+
 
 class View(Base, TimeStampedModel):
     __tablename__ = 'views'

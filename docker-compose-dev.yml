@@ -1,17 +1,56 @@
-version: '3.1'
+version: '3.9'
+
 volumes:
-  DB_DATA:
+  TWITTER_DATA:
+  ANALYTICS_DATA:
+
+networks:
+  TWITTER_BACKEND:
+
 services:
-  db:
+  twitter_db:
     image: "postgres:13-alpine"
     restart: "no"
     ports:
       - "5314:5432"
     environment:
-      POSTGRES_USER: fast_api
+      POSTGRES_USER: twitter_api
       POSTGRES_PASSWORD: 123456
       PGPASSWORD: 123456
       POSTGRES_DB: twitter_api
       PGDATA: /db_data
     volumes:
-      - DB_DATA:/db_data
+      - TWITTER_DATA:/db_data
+    networks:
+      - TWITTER_BACKEND
+
+
+  analytics_db:
+    image: "postgres:13-alpine"
+    restart: "no"
+    ports:
+      - "5313:5432"
+    environment:
+      POSTGRES_USER: analytics_api
+      POSTGRES_PASSWORD: 123456
+      PGPASSWORD: 123456
+      POSTGRES_DB: analytics_api
+      PGDATA: /db_data
+    volumes:
+      - ANALYTICS_DATA:/db_data
+    networks:
+      - TWITTER_BACKEND
+
+  analytics_api:
+    image: "twitter_analytics_api/dev"
+    restart: "no"
+    volumes:
+      - ./analytics:/code
+    environment:
+      DB_URL: "postgresql://analytics_api:123456@analytics_db:5432/analytics_api"
+    depends_on:
+      - analytics_db
+    networks:
+      - TWITTER_BACKEND
+    ports:
+      - "8030:8030"

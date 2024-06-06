@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = false
+name = "pypi"
+
+[packages]
+fastapi = "*"
+pydantic = "*"
+pydantic-settings = "*"
+psycopg2-binary = "*"
+sqlalchemy = "*"
+alembic = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"

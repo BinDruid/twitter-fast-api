@@ -1,7 +1,6 @@
-from __future__ import annotations
-
 import typer
 import uvicorn
+import fastapi
 
 cli = typer.Typer()
 
@@ -18,18 +17,10 @@ def migrate_db():
 def runserver(
     port: int = 8000,
     host: str = 'localhost',
-    log_level: str = 'debug',
-    reload: bool = True,
 ):
     """Run the API development server(uvicorn)."""
-    migrate_db()
-    uvicorn.run(
-        'twitter_api.main:api',
-        host=host,
-        port=port,
-        log_level=log_level,
-        reload=reload,
-    )
+    import subprocess
+    subprocess.run(('fastapi', 'dev', './twitter_api/main.py', '--reload', '--host', f'{host}', '--port', f'{port}'))  # noqa
 
 
 if __name__ == '__main__':

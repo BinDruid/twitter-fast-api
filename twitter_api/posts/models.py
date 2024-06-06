@@ -5,8 +5,8 @@ from pydantic import Field
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
-from api.core.pagination import Pagination
-from api.database import Base, PydanticBase, TimeStampedModel
+from twitter_api.core.pagination import Pagination
+from twitter_api.database import Base, PydanticBase, TimeStampedModel
 
 
 class Post(Base, TimeStampedModel):

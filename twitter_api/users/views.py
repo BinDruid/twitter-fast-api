@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException
 from starlette import status
 
-from api.core.pagination import paginate
-from api.database import DbSession
+from twitter_api.core.pagination import paginate
+from twitter_api.database import DbSession
 
 from . import services
 from .auth import CurrentUser, InvalidCredentialException

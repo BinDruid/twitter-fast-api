@@ -1,9 +1,10 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, BackgroundTasks, HTTPException
 from starlette import status
 
-from api.core.pagination import paginate
-from api.database import DbSession
-from api.users.auth import CurrentUser
+from twitter_api.core.pagination import paginate
+from twitter_api.database import DbSession
+from twitter_api.engagements.tasks import increase_post_view_count
+from twitter_api.users.auth import CurrentUser
 
 from . import services
 from .depends import AuthorByName, PostByAuthor, PostByID
@@ -19,7 +20,8 @@ async def list_user_posts_with_their_quoted(db_session: DbSession, author: Autho
 
 
 @router.get('/{username}/{post_id}/', response_model=PostDetailWithQuote)
-async def get_user_post_detail_with_its_quoted(post: PostByAuthor):
+async def get_user_post_detail_with_its_quoted(post: PostByAuthor, worker: BackgroundTasks):
+    worker.add_task(increase_post_view_count, post.id)
     return post
 
 

@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 
-from api.core.config import app_configs
-from api.core.middleware import AuthenticationMiddleware, ExceptionMiddleware, LoggingMiddleware
-from api.core.startup import startup
-from api.routes import api_router
+from twitter_api.core.config import app_configs
+from twitter_api.core.middleware import AuthenticationMiddleware, ExceptionMiddleware, LoggingMiddleware
+from twitter_api.core.startup import startup
+from twitter_api.routes import api_router
 
 
 def get_application() -> FastAPI:

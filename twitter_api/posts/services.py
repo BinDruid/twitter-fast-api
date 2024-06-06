@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Query, Session
 
-from api.users.models import User
+from twitter_api.users.models import User
 
 from .models import Mention, Post, PostPayload
 

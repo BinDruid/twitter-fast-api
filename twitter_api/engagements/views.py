@@ -1,9 +1,9 @@
 from fastapi import APIRouter, HTTPException
 from starlette import status
 
-from api.database import DbSession
-from api.posts.depends import PostByID
-from api.users.auth import CurrentUser
+from twitter_api.database import DbSession
+from twitter_api.posts.depends import PostByID
+from twitter_api.users.auth import CurrentUser
 
 from . import services
 from .models import Like
@@ -11,13 +11,13 @@ from .models import Like
 router = APIRouter()
 
 
-@router.post('/{post_id}/', status_code=status.HTTP_201_CREATED)
+@router.post('/likes/{post_id}/', status_code=status.HTTP_201_CREATED)
 def like_post(user: CurrentUser, db_session: DbSession, post: PostByID):
     services.create_like_for_post(db_session=db_session, user=user, post=post)
     return {'message': f'User #{user.id} liked post #{post.id}'}
 
 
-@router.delete('/{post_id}/', status_code=status.HTTP_204_NO_CONTENT)
+@router.delete('/likes/{post_id}/', status_code=status.HTTP_204_NO_CONTENT)
 def dislike_post(user: CurrentUser, db_session: DbSession, post: PostByID):
     like = db_session.query(Like).filter(Like.user_id == user.id, Like.post_id == post.id).one_or_none()
     if like is None:

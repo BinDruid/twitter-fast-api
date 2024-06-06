@@ -7,9 +7,9 @@ from pydantic import field_validator
 from pydantic.networks import EmailStr
 from sqlalchemy import Boolean, CheckConstraint, Column, ForeignKey, Integer, String, UniqueConstraint
 
-from api.core.config import settings
-from api.core.pagination import Pagination
-from api.database import Base, PydanticBase, TimeStampedModel
+from twitter_api.core.config import settings
+from twitter_api.core.pagination import Pagination
+from twitter_api.database import Base, PydanticBase, TimeStampedModel
 
 
 def hash_password(password: str):

@@ -61,7 +61,7 @@ Authorization: Bearer {{token_1}}
 
 POST {{base_url}}/posts/
 Content-Type: application/json
-Authorization: Bearer {{token_2}}
+Authorization: Bearer {{token_1}}
 
 {"content": "this my 1 tweet"
 }
@@ -73,7 +73,7 @@ Accept: application/json
 Authorization: Bearer {{token_1}}
 
 ###
-GET {{base_url}}/posts/druid/4/
+GET {{base_url}}/posts/druid/1/
 Accept: application/json
 Authorization: Bearer {{token_1}}
 
@@ -134,3 +134,9 @@ Accept: application/json
 Authorization: Bearer {{token_1}}
 ###
 
+
+###
+GET {{base_url}}/engagements/views/1/
+Accept: application/json
+Authorization: Bearer {{token_1}}
+###

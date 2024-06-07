@@ -3,7 +3,7 @@ import grpc
 from twitter_api.core.config import settings
 from twitter_api.core.logging import logger
 
-from . import post_views_pb2, post_views_pb2_grpc
+from .grpc import post_views_pb2, post_views_pb2_grpc
 
 
 def create_post_view_count_entry(post_id: int):

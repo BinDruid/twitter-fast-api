@@ -2,7 +2,7 @@ import os
 from concurrent import futures
 
 import grpc
-from service import post_views_pb2_grpc, ViewAnalyticsService
+from service import ViewAnalyticsService, post_views_pb2_grpc
 from service.logger import logger
 
 

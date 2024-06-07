@@ -7,7 +7,8 @@ from twitter_api.database import DbSession
 from twitter_api.posts.depends import PostByID
 from twitter_api.users.auth import CurrentUser
 
-from . import post_views_pb2, post_views_pb2_grpc, services
+from . import services
+from .grpc import post_views_pb2, post_views_pb2_grpc
 from .models import Like
 
 router = APIRouter()

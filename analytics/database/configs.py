@@ -1,9 +1,9 @@
+import os
+
 from sqlalchemy import MetaData, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 
-from api.core.config import settings
-
-db_url = str(settings.DB_URL)
+db_url = str(os.getenv('DB_URL'))
 engine = create_engine(db_url)
 
 POSTGRES_INDEXES_NAMING_CONVENTION = {

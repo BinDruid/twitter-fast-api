@@ -1,6 +1,5 @@
-fastapi
-pydantic
-pydantic-settings
 psycopg2-binary
 sqlalchemy
 alembic
+grpcio-tools
+rich

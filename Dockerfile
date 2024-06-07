@@ -12,5 +12,5 @@ RUN pip install -r /code/requirements.txt
 
 WORKDIR /code/
 EXPOSE 8000
-HEALTHCHECK CMD curl --fail http://localhost:8000/docs || exit 1
+HEALTHCHECK CMD curl --fail http://localhost:8000/api/v1/healthcheck/ || exit 1
 ENTRYPOINT ["fastapi", "run", "./twitter_api/main.py", "--reload", "--host", "0.0.0.0", "--port", "8000"]

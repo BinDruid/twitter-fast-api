@@ -1,6 +1,4 @@
 import typer
-import uvicorn
-import fastapi
 
 cli = typer.Typer()
 
@@ -20,6 +18,7 @@ def runserver(
 ):
     """Run the API development server(uvicorn)."""
     import subprocess
+
     subprocess.run(('fastapi', 'dev', './twitter_api/main.py', '--reload', '--host', f'{host}', '--port', f'{port}'))  # noqa
 
 

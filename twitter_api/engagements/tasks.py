@@ -1,21 +1,27 @@
-from twitter_api.core.logging import logger
-from twitter_api.database.depends import get_db_session
-from twitter_api.posts.models import Post
+import grpc
 
-from .models import View
+from twitter_api.core.config import settings
+from twitter_api.core.logging import logger
+
+from . import post_views_pb2, post_views_pb2_grpc
+
+
+def create_post_view_count_entry(post_id: int):
+    logger.info('Task to increase post #{} views has been called'.format(post_id))
+    with grpc.insecure_channel(settings.ANALYTICS_URL) as channel:
+        stub = post_views_pb2_grpc.PostViewAnalyticsStub(channel)
+        stub.CreateViewCount(post_views_pb2.PostViewRequest(post_id=post_id))
 
 
 def increase_post_view_count(post_id: int):
     logger.info('Task to increase post #{} views has been called'.format(post_id))
-    db_session = get_db_session()
-    post = db_session.query(Post).filter(Post.id == post_id).one_or_none()
-    if post is None:
-        return
-    post_view = db_session.query(View).filter(View.post_id == post_id).one_or_none()
-    if post_view is None:
-        new_post_view = View(post_id=post_id, count=1)
-        db_session.add(new_post_view)
-    else:
-        post_view.count = post_view.count + 1
-    db_session.commit()
-    return
+    with grpc.insecure_channel(settings.ANALYTICS_URL) as channel:
+        stub = post_views_pb2_grpc.PostViewAnalyticsStub(channel)
+        stub.UpdateViewCount(post_views_pb2.PostViewRequest(post_id=post_id))
+
+
+def delete_post_view_count_entry(post_id: int):
+    logger.info('Task to increase post #{} views has been called'.format(post_id))
+    with grpc.insecure_channel(settings.ANALYTICS_URL) as channel:
+        stub = post_views_pb2_grpc.PostViewAnalyticsStub(channel)
+        stub.DeleteViewCount(post_views_pb2.PostViewRequest(post_id=post_id))

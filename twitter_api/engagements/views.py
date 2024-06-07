@@ -1,11 +1,13 @@
+import grpc
 from fastapi import APIRouter, HTTPException
 from starlette import status
 
+from twitter_api.core.config import settings
 from twitter_api.database import DbSession
 from twitter_api.posts.depends import PostByID
 from twitter_api.users.auth import CurrentUser
 
-from . import services
+from . import post_views_pb2, post_views_pb2_grpc, services
 from .models import Like
 
 router = APIRouter()
@@ -28,3 +30,11 @@ def dislike_post(user: CurrentUser, db_session: DbSession, post: PostByID):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f'You did not like post #{post.id}')
     services.delete_like_for_post(db_session=db_session, like=like)
     return {'message': f'User #{user.id} disliked post #{post.id}'}
+
+
+@router.get('/views/{post_id}/')
+def get_count_of_post_views(post_id: int):
+    with grpc.insecure_channel(settings.ANALYTICS_URL) as channel:
+        stub = post_views_pb2_grpc.PostViewAnalyticsStub(channel)
+        response = stub.GetViewCount(post_views_pb2.PostViewRequest(post_id=post_id))
+    return {'post_id': response.post_id, 'view_count': response.post_view_count}

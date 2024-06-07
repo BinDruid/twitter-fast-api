@@ -32,10 +32,16 @@ class Settings(BaseSettings):
     SECRET_KEY: str
     DEBUG: bool = True
     DB_URL: PostgresDsn
+    ANALYTICS_HOST: str
+    ANALYTICS_PORT: int
     PAGINATION_PER_PAGE: int = 20
     JWT_SECRET: str
     JWT_ALG: str = 'HS256'
     JWT_EXP: int = 86400  # Seconds
+
+    @property
+    def ANALYTICS_URL(self) -> str:
+        return f'{self.ANALYTICS_HOST}:{str(self.ANALYTICS_PORT)}'
 
     class Config:
         env_file = '.env'

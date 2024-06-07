@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+message PostViewRequest {
+    int32 post_id = 1;
+}
+
+message PostViewResponse {
+    int32 post_id = 1;
+    int32 post_view_count = 2;
+}
+
+service PostViewAnalytics {
+    rpc GetViewCount (PostViewRequest) returns (PostViewResponse);
+    rpc CreateViewCount (PostViewRequest) returns (PostViewResponse);
+    rpc UpdateViewCount (PostViewRequest) returns (PostViewResponse);
+    rpc DeleteViewCount (PostViewRequest) returns (PostViewResponse);
+}

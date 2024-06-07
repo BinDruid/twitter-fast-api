@@ -29,7 +29,10 @@ exclude = [
     'settings',
     'site-packages',
     'venv',
+    'post_views_pb2_grpc.py',
+    'post_views_pb2.py'
 ]
+src = ['twitter_api']
 include = ['*.py']
 line-length = 120
 output-format = 'grouped'

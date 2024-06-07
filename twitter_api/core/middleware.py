@@ -1,4 +1,5 @@
 import datetime
+from uuid import uuid4
 
 from fastapi import HTTPException, status
 from fastapi.responses import JSONResponse, Response
@@ -45,9 +46,6 @@ class AuthenticationMiddleware(BaseHTTPMiddleware):
         authorization: str = request.headers.get('Authorization')
         scheme, param = get_authorization_scheme_param(authorization)
         if not authorization or scheme.lower() != 'bearer':
-            logger.info(
-                f'Malformed authorization header. Scheme: {scheme} Param: {param} Authorization: {authorization}'
-            )
             request.state.user = AnonymousUser()
             response = await call_next(request)
             return response
@@ -66,10 +64,12 @@ class LoggingMiddleware(BaseHTTPMiddleware):
         start_time = datetime.datetime.utcnow()
         method_name = request.method.upper()
         url = request.url
-        user = request.state.user.id
-        with open(f'{settings.PATHS.ROOT_DIR}/logs/requests.log', mode='a') as request_logs:
-            log_message = f'[{start_time}] [User #{user}] [{method_name}] {url}\n'
-            request_logs.write(log_message)
+        user = request.state.user.id or 'Anonymous'
+        if '/healthcheck/' not in str(url):
+            with open(f'{settings.PATHS.ROOT_DIR}/logs/requests.log', mode='a') as request_logs:
+                log_id = str(uuid4())
+                log_message = f'Log [{log_id}]\n[{start_time}] [User #{user}] [{method_name}] {url}\n'
+                request_logs.write(log_message)
         response = await call_next(request)
         process_time = datetime.datetime.utcnow() - start_time
         response.headers['X-Process-Time'] = str(process_time)

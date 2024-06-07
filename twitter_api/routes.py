@@ -10,3 +10,8 @@ api_router.include_router(auth_router, prefix='/auth', tags=['Authentication'])
 api_router.include_router(user_router, prefix='/users', tags=['Users'])
 api_router.include_router(post_router, prefix='/posts', tags=['Posts'])
 api_router.include_router(engagement_router, prefix='/engagements', tags=['Engagements'])
+
+
+@api_router.get('/healthcheck/', include_in_schema=False)
+def healthcheck():
+    return {'status': 'ok'}

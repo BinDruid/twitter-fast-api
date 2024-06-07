@@ -28,8 +28,6 @@ services:
   analytics_db:
     image: "postgres:13-alpine"
     restart: "no"
-    ports:
-      - "5313:5432"
     environment:
       POSTGRES_USER: analytics_api
       POSTGRES_PASSWORD: 123456
@@ -41,16 +39,40 @@ services:
     networks:
       - TWITTER_BACKEND
 
-  analytics_api:
-    image: "twitter_analytics_api/dev"
+  analytics:
+    build:
+        context: .
+        dockerfile: ./analytics/Dockerfile
     restart: "no"
     volumes:
       - ./analytics:/code
     environment:
       DB_URL: "postgresql://analytics_api:123456@analytics_db:5432/analytics_api"
+      ANALYTICS_PORT: 50051
     depends_on:
       - analytics_db
     networks:
       - TWITTER_BACKEND
+
+  twitter_api:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: "no"
+    volumes:
+      - ./twitter_api:/code/twitter_api/
+      - ./logs:/code/logs
+    environment:
+      DB_URL: "postgresql://twitter_api:123456@twitter_db:5432/twitter_api"
+      ANALYTICS_HOST: analytics
+      ANALYTICS_PORT: 50051
+      SECRET_KEY: super_secret_key
+      JWT_SECRET: super_jwt_secret_key
+    depends_on:
+      - twitter_db
+      - analytics
+    networks:
+      - TWITTER_BACKEND
     ports:
-      - "8030:8030"
+      - "8000:8000"
+

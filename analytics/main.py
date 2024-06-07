@@ -2,9 +2,8 @@ import os
 from concurrent import futures
 
 import grpc
-import post_views_pb2_grpc
-from logger import logger
-from service import ViewAnalyticsService
+from service import post_views_pb2_grpc, ViewAnalyticsService
+from service.logger import logger
 
 
 def runserver():

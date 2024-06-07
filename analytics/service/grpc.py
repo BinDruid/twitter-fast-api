@@ -1,11 +1,12 @@
 import grpc
-import post_views_pb2
-import post_views_pb2_grpc
-from logger import logger
 from sqlalchemy.orm import Session, sessionmaker
 
 from database.configs import engine
 from database.models import PostView
+
+from .logger import logger
+from . import post_views_pb2
+from . import post_views_pb2_grpc
 
 
 def get_db_session() -> Session:

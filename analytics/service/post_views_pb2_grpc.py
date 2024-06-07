@@ -3,7 +3,7 @@
 import warnings
 
 import grpc
-import post_views_pb2 as post__views__pb2
+from . import post_views_pb2 as post__views__pb2
 
 GRPC_GENERATED_VERSION = '1.64.1'
 GRPC_VERSION = grpc.__version__

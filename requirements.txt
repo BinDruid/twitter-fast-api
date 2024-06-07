@@ -1,0 +1,13 @@
+fastapi
+pydantic
+pydantic-settings
+bcrypt
+python-jose
+typer
+rich
+psycopg2-binary
+sqlalchemy
+sqlalchemy-filters
+alembic
+grpcio-tools
+

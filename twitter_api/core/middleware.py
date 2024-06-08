@@ -41,19 +41,21 @@ class AuthenticatedUser(BaseModel):
         return False
 
 
+class NoAuthenticationHeaderError(Exception):
+    pass
+
+
 class AuthenticationMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
         authorization: str = request.headers.get('Authorization')
         scheme, param = get_authorization_scheme_param(authorization)
-        if not authorization or scheme.lower() != 'bearer':
-            request.state.user = AnonymousUser()
-            response = await call_next(request)
-            return response
-        token = authorization.split()[1]
         try:
+            if not authorization or scheme.lower() != 'bearer':
+                raise NoAuthenticationHeaderError()
+            token = authorization.split()[1]
             data = jwt.decode(token, settings.JWT_SECRET)
             request.state.user = AuthenticatedUser(id=data['id'], username=data['username'])
-        except (JWKError, JWTError):
+        except (NoAuthenticationHeaderError, JWKError, JWTError):
             request.state.user = AnonymousUser()
         response = await call_next(request)
         return response

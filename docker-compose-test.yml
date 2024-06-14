@@ -1,0 +1,47 @@
+version: '3.9'
+
+volumes:
+  TWITTER_DATA:
+  ANALYTICS_DATA:
+
+networks:
+  TWITTER_BACKEND_TEST:
+
+services:
+  twitter_db_test:
+    image: "postgres:13-alpine"
+    restart: "no"
+    ports:
+      - "5310:5432"
+    environment:
+      POSTGRES_USER: test_twitter_api
+      POSTGRES_PASSWORD: 123456
+      PGPASSWORD: 123456
+      POSTGRES_DB: test_twitter_api
+      PGDATA: /db_data
+    tmpfs:
+      - /db_data
+    networks:
+      - TWITTER_BACKEND_TEST
+
+  twitter_api_test:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: "no"
+    volumes:
+      - ./twitter_api:/code/twitter_api/
+      - ./tests:/code/tests/
+      - ./logs:/code/logs
+    environment:
+      ENVIRONMENT: test
+      DB_URL: postgresql://test_twitter_api:123456@twitter_db_test:5432/test_twitter_api
+      SECRET_KEY: super_secret_key
+      JWT_SECRET: super_jwt_secret_key
+      ANALYTICS_HOST: localhost
+      ANALYTICS_PORT: 50051
+    depends_on:
+      - twitter_db_test
+    networks:
+      - TWITTER_BACKEND_TEST
+    entrypoint: pytest -v --disable-warnings

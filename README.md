@@ -47,5 +47,11 @@ alembic upgrade head
 ### Run the fastapi app
 
 ```shell
-python manage.py runserver
+make runserver
+```
+
+### Run tests
+
+```shell
+make test
 ```

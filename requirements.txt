@@ -8,6 +8,12 @@ rich
 psycopg2-binary
 sqlalchemy
 sqlalchemy-filters
+sqlalchemy-utils
 alembic
 grpcio-tools
+pytest
+faker
+pytz
+factory-boy
+
 

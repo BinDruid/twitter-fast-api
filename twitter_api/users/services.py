@@ -4,6 +4,16 @@ from .depends import FollowerByID, FollowingByID
 from .models import Followership, FollowerShipPayload, User, UserCreatePayload
 
 
+def get_user_by_email(*, db_session: Session, email: str):
+    user = db_session.query(User.email == email).one_or_none()
+    return user
+
+
+def get_user_by_username(*, db_session: Session, username: str):
+    user = db_session.query(User.username == username).one_or_none()
+    return user
+
+
 def delete_user(*, db_session: Session, user: User) -> None:
     db_session.delete(user)
     db_session.commit()

@@ -66,6 +66,10 @@ def unfollow_user(current_user: CurrentUser, db_session: DbSession, user: UserBy
 
 @auth_router.post('/', response_model=UserDetail, status_code=status.HTTP_201_CREATED)
 def create_user(db_session: DbSession, payload: UserCreatePayload):
+    email_already_exist = services.get_user_by_username(db_session=db_session, username=payload.username)
+    username_already_exist = services.get_user_by_email(db_session=db_session, email=payload.email)
+    if email_already_exist or username_already_exist:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='User already exists')
     new_user = services.create_user(db_session=db_session, context=payload)
     return new_user
 

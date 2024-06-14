@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Any
 
-from pydantic import PostgresDsn
+from pydantic import ConfigDict, PostgresDsn
 from pydantic_settings import BaseSettings
 
 try:
@@ -16,6 +16,7 @@ except ImportError:
 class Environment(StrEnum):
     dev = 'dev'
     prod = 'prod'
+    test = 'test'
 
 
 class Paths:
@@ -24,11 +25,13 @@ class Paths:
 
 
 class Settings(BaseSettings):
+    model_config = ConfigDict(env_file='.env')
+
     @property
     def PATHS(self) -> Paths:
         return Paths()
 
-    ENVIRONMENT: Environment = 'dev'
+    ENVIRONMENT: Environment
     SECRET_KEY: str
     DEBUG: bool = True
     DB_URL: PostgresDsn
@@ -42,9 +45,6 @@ class Settings(BaseSettings):
     @property
     def ANALYTICS_URL(self) -> str:
         return f'{self.ANALYTICS_HOST}:{str(self.ANALYTICS_PORT)}'
-
-    class Config:
-        env_file = '.env'
 
 
 settings = Settings()

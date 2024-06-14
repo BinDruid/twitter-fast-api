@@ -1,7 +1,8 @@
 from sqlalchemy.orm import scoped_session, sessionmaker
 from twitter_api.database import engine
-from twitter_api.database.depends import get_db_session
-from twitter_api.main import api
+from twitter_api.engagements.models import Bookmark, Like
+from twitter_api.posts.models import Mention, Post
+from twitter_api.users.models import Followership, User
 
 Session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
 
@@ -13,7 +14,11 @@ def db_session():
     session.rollback()
 
 
-api.dependency_overrides[get_db_session] = db_session
-
-
-test_api = api
+def clean_tables(session):
+    session.query(User).delete()
+    session.query(Followership).delete()
+    session.query(Post).delete()
+    session.query(Mention).delete()
+    session.query(Like).delete()
+    session.query(Bookmark).delete()
+    session.commit()

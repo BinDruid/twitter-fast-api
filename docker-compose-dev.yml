@@ -63,7 +63,8 @@ services:
       - ./twitter_api:/code/twitter_api/
       - ./logs:/code/logs
     environment:
-      DB_URL: "postgresql://twitter_api:123456@twitter_db:5432/twitter_api"
+      ENVIRONMENT: dev
+      DB_URL: postgresql://twitter_api:123456@twitter_db:5432/twitter_api
       ANALYTICS_HOST: analytics
       ANALYTICS_PORT: 50051
       SECRET_KEY: super_secret_key

@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 
-from twitter_api.engagements.views import router as engagement_router
-from twitter_api.posts.views import router as post_router
-from twitter_api.users.views import auth_router, user_router
+from twitter_api.engagements.routes import router as engagement_router
+from twitter_api.posts.routes import router as post_router
+from twitter_api.users.routes import auth_router, user_router
 
 api_router = APIRouter()
 

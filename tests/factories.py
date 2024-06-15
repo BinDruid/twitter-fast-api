@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from factory import Sequence
+from factory import LazyFunction, Sequence
 from factory.alchemy import SQLAlchemyModelFactory
 from factory.fuzzy import FuzzyDateTime
 from faker import Faker
@@ -29,7 +29,7 @@ class TimeStampBaseFactory(BaseFactory):
 class UserFactory(TimeStampBaseFactory, BaseFactory):
     username = fake.user_name()
     email = Sequence(lambda n: f'user{n}@example.com')
-    password = hash_password('test123')
+    password = LazyFunction(lambda: hash_password('test123').decode('utf-8'))
 
     class Meta:
         model = User

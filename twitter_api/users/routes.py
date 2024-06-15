@@ -78,8 +78,8 @@ def create_user(db_session: DbSession, payload: UserCreatePayload):
 def login_user(db_session: DbSession, payload: UserLoginPayload):
     user = db_session.query(User).filter(User.username == payload.username).one_or_none()
     if user is None:
-        return InvalidCredentialException
+        raise InvalidCredentialException
     is_authenticated = user.check_password(payload.password)
     if not is_authenticated:
-        return InvalidCredentialException
+        raise InvalidCredentialException
     return {'username': user.username, 'token': user.token}

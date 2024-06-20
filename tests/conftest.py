@@ -45,6 +45,6 @@ def client(test_api):
     yield TestClient(app=test_api, base_url=base_url)
 
 
-@pytest.fixture
+@pytest.fixture(scope='function')
 def user():
-    return UserFactory()
+    return UserFactory(username='bindruid', email='abharya.dev@gmail.com')

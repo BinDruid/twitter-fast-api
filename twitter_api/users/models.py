@@ -6,17 +6,18 @@ from jose import jwt
 from pydantic import field_validator
 from pydantic.networks import EmailStr
 from sqlalchemy import Boolean, CheckConstraint, Column, ForeignKey, Integer, String, UniqueConstraint
+from sqlalchemy.orm import relationship
 
 from twitter_api.core.config import settings
 from twitter_api.core.pagination import Pagination
 from twitter_api.database import Base, PydanticBase, TimeStampedModel
 
 
-def hash_password(password: str):
+def hash_password(password: str) -> str:
     """Generates a hashed version of the provided password."""
     pw = bytes(password, 'utf-8')
     salt = bcrypt.gensalt()
-    return bcrypt.hashpw(pw, salt)
+    return bcrypt.hashpw(pw, salt).decode('utf-8')
 
 
 class User(Base, TimeStampedModel):
@@ -53,6 +54,8 @@ class Followership(Base, TimeStampedModel):
     id = Column(Integer, primary_key=True)
     following_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     follower_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    following = relationship('User', foreign_keys='Followership.following_id')
+    follower = relationship('User', foreign_keys='Followership.follower_id')
 
     def __str__(self):
         return f'{self.following_id}->{self.follower_id}'
@@ -66,8 +69,7 @@ class UserCreatePayload(PydanticBase):
     @field_validator('password')
     @classmethod
     def make_hash(cls, password: str) -> str:
-        hashed_password = hash_password(password)
-        return hashed_password.decode('utf-8')
+        return hash_password(password)
 
 
 class UserLoginPayload(PydanticBase):

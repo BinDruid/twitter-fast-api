@@ -1,35 +1,25 @@
 import pytest
-from sqlalchemy_utils import create_database, database_exists, drop_database
 from fastapi.testclient import TestClient
-from twitter_api.core.config import settings
 from twitter_api.database import Base, engine
 from twitter_api.database.depends import get_db_session
 from twitter_api.main import api
 
-from .configs import Session, clean_tables
+from .configs import Session
 from .factories import FollowershipFactory, UserFactory
 
-Base.metadata.create_all(bind=engine)
 
-
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def db():
-    if database_exists(settings.DB_URL):
-        drop_database(settings.DB_URL)
-
-    if not database_exists(settings.DB_URL):
-        create_database(settings.DB_URL)
-
+    Base.metadata.create_all(bind=engine)
     yield
-    drop_database(settings.DB_URL)
+    Base.metadata.drop_all(bind=engine)
 
 
 @pytest.fixture(scope='function', autouse=True)
-def session():
+def session(db):
     session = Session()
     yield session
     session.rollback()
-    clean_tables(session)
     session.close()
 
 

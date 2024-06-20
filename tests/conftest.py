@@ -8,14 +8,14 @@ from .configs import Session
 from .factories import FollowershipFactory, UserFactory
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture()
 def db():
     Base.metadata.create_all(bind=engine)
     yield
     Base.metadata.drop_all(bind=engine)
 
 
-@pytest.fixture(scope='function', autouse=True)
+@pytest.fixture()
 def session(db):
     session = Session()
     yield session
@@ -35,18 +35,18 @@ def client(test_api):
     yield TestClient(app=test_api, base_url=base_url)
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture()
 def test_user():
     return UserFactory(username='bindruid', email='abharya.dev@gmail.com')
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture()
 def user_as_follower(test_user):
     other_user = UserFactory()
     return FollowershipFactory(follower=test_user, following=other_user)
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture()
 def user_as_following(test_user):
     other_user = UserFactory()
     return FollowershipFactory(follower=other_user, following=test_user)

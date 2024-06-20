@@ -1,5 +1,4 @@
-from fastapi import APIRouter, HTTPException
-from starlette import status
+from fastapi import APIRouter, HTTPException, status
 
 from twitter_api.core.pagination import paginate
 from twitter_api.database import DbSession

@@ -138,3 +138,47 @@ def test_authenticated_user_can_not_remove_non_existing_followership(session, cl
     url = f'/users/{user.id}/followers/{sample_user.id}/'
     response = client.delete(url, headers=headers)
     assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+def test_authenticated_user_can_follow_another_user(session, client, user):
+    sample_user = UserFactory()
+    headers = {'Authorization': f'Bearer {user.token}'}
+    payload = {'user_id': sample_user.id}
+    url = f'/users/{user.id}/followings/'
+    response = client.post(url, headers=headers, json=payload)
+    assert response.status_code == status.HTTP_201_CREATED
+
+
+def test_authenticated_user_can_not_follow_another_user_on_behalf_of_other_user(session, client, user):
+    sample_user = UserFactory()
+    headers = {'Authorization': f'Bearer {user.token}'}
+    payload = {'user_id': user.id}
+    url = f'/users/{sample_user.id}/followings/'
+    response = client.post(url, headers=headers, json=payload)
+    assert response.status_code == status.HTTP_403_FORBIDDEN
+
+
+def test_authenticated_user_can_not_follow_themselves(session, client, user):
+    headers = {'Authorization': f'Bearer {user.token}'}
+    payload = {'user_id': user.id}
+    url = f'/users/{user.id}/followings/'
+    response = client.post(url, headers=headers, json=payload)
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+
+def test_authenticated_user_can_unfollow_another_user(session, client, user):
+    sample_user = UserFactory()
+    FollowershipFactory(follower=user, following=sample_user)
+    headers = {'Authorization': f'Bearer {user.token}'}
+    url = f'/users/{user.id}/followings/{sample_user.id}/'
+    response = client.delete(url, headers=headers)
+    assert response.status_code == status.HTTP_204_NO_CONTENT
+
+
+def test_authenticated_user_can_not_unfollow_another_user_on_behalf_of_other_user(session, client, user):
+    sample_user = UserFactory()
+    FollowershipFactory(follower=sample_user, following=user)
+    headers = {'Authorization': f'Bearer {user.token}'}
+    url = f'/users/{sample_user.id}/followings/{user.id}/'
+    response = client.delete(url, headers=headers)
+    assert response.status_code == status.HTTP_403_FORBIDDEN

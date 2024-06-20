@@ -51,13 +51,15 @@ def get_user_followings(db_session: DbSession, user: UserByID, page: int = 1):
 def follow_user(current_user: CurrentUser, db_session: DbSession, user: UserByID, following: FollowerShipPayload):
     if current_user.id != user.id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
+    if user.id == following.user_id:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='User can not follow themselves')
     services.follow_user(db_session=db_session, user=user, following=following)
     return {'message': f'User #{user.id} now is following user #{following.user_id}'}
 
 
 @user_router.delete('/{user_id}/followings/{following_user_id}/', status_code=status.HTTP_204_NO_CONTENT)
 def unfollow_user(current_user: CurrentUser, db_session: DbSession, user: UserByID, following: FollowingByID):
-    if user.id != user.id:
+    if current_user.id != user.id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
     services.unfollow_user(db_session=db_session, following=following)
     return {'message': f'Unfollowed user #{following.following_id}'}

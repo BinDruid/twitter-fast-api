@@ -1,13 +1,13 @@
 import pytest
 from sqlalchemy_utils import create_database, database_exists, drop_database
-from starlette.testclient import TestClient
+from fastapi.testclient import TestClient
 from twitter_api.core.config import settings
 from twitter_api.database import Base, engine
 from twitter_api.database.depends import get_db_session
 from twitter_api.main import api
 
 from .configs import Session, clean_tables
-from .factories import UserFactory
+from .factories import FollowershipFactory, UserFactory
 
 Base.metadata.create_all(bind=engine)
 
@@ -46,5 +46,17 @@ def client(test_api):
 
 
 @pytest.fixture(scope='function')
-def user():
+def test_user():
     return UserFactory(username='bindruid', email='abharya.dev@gmail.com')
+
+
+@pytest.fixture(scope='function')
+def user_as_follower(test_user):
+    other_user = UserFactory()
+    return FollowershipFactory(follower=test_user, following=other_user)
+
+
+@pytest.fixture(scope='function')
+def user_as_following(test_user):
+    other_user = UserFactory()
+    return FollowershipFactory(follower=other_user, following=test_user)

@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Query, Session
 
 from .depends import FollowerByID, FollowingByID
-from .models import Followership, FollowerShipPayload, User, UserCreatePayload
+from .models import Followership, User
 
 
 def get_user_by_email(*, db_session: Session, email: str):
@@ -36,8 +36,8 @@ def get_followings_by_user(*, db_session: Session, user: User) -> Query[User]:
     return followings
 
 
-def follow_user(*, db_session: Session, user: User, following: FollowerShipPayload) -> None:
-    followership = Followership(follower_id=user.id, following_id=following.user_id)
+def follow_user(*, db_session: Session, user: User, following_id: int) -> None:
+    followership = Followership(follower_id=user.id, following_id=following_id)
     db_session.add(followership)
     db_session.commit()
 
@@ -47,8 +47,8 @@ def unfollow_user(*, db_session: Session, following: FollowingByID) -> None:
     db_session.commit()
 
 
-def create_user(*, db_session: Session, context: UserCreatePayload):
-    user = User(email=context.email, username=context.username, password=context.password)
+def create_user(*, db_session: Session, username: str, email: str, password: str):
+    user = User(email=email, username=username, password=password)
     db_session.add(user)
     db_session.commit()
     return user

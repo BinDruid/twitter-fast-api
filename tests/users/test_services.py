@@ -1,5 +1,5 @@
 from twitter_api.users import services
-from twitter_api.users.models import Followership, FollowerShipPayload, User, UserCreatePayload
+from twitter_api.users.models import Followership, User
 
 from tests.factories import UserFactory
 
@@ -60,7 +60,7 @@ def test_remove_user_from_followers(session, user_as_following):
 
 def test_follow_user(session, test_user):
     following_user = UserFactory()
-    services.follow_user(db_session=session, user=test_user, following=FollowerShipPayload(user_id=following_user.id))
+    services.follow_user(db_session=session, user=test_user, following_id=following_user.id)
     followership_exists = session.query(
         session.query(Followership)
         .filter(Followership.following_id == following_user.id, Followership.follower_id == test_user.id)
@@ -82,10 +82,9 @@ def test_unfollow_user(session, user_as_follower):
 
 
 def test_create_new_user(session):
-    payload = UserCreatePayload(username='ali', email='a.abharya@gmail.com', password='123456')
-    new_user = services.create_user(db_session=session, context=payload)
+    new_user = services.create_user(db_session=session, username='ali', email='a.abharya@gmail.com', password='123456')
     user_exists = session.query(
-        session.query(User).filter(User.username == payload.username, User.email == payload.email).exists()
+        session.query(User).filter(User.username == 'ali', User.email == 'a.abharya@gmail.com').exists()
     ).scalar()
     assert new_user
     assert user_exists

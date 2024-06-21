@@ -53,7 +53,7 @@ def follow_user(current_user: CurrentUser, db_session: DbSession, user: UserByID
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
     if user.id == following.user_id:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='User can not follow themselves')
-    services.follow_user(db_session=db_session, user=user, following=following)
+    services.follow_user(db_session=db_session, user=user, following_id=following.user_id)
     return {'message': f'User #{user.id} now is following user #{following.user_id}'}
 
 
@@ -71,7 +71,9 @@ def create_user(db_session: DbSession, payload: UserCreatePayload):
     username_already_exist = services.get_user_by_email(db_session=db_session, email=payload.email)
     if email_already_exist or username_already_exist:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='User already exists')
-    new_user = services.create_user(db_session=db_session, context=payload)
+    new_user = services.create_user(
+        db_session=db_session, username=payload.username, email=payload.email, password=payload.password
+    )
     return new_user
 
 

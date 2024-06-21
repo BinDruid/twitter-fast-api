@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+import datetime
 
 import bcrypt
 from fastapi import HTTPException, status
@@ -12,8 +12,8 @@ InvalidCredentialException = HTTPException(
 
 
 def generate_token(*, user) -> str:
-    now = datetime.utcnow()
-    exp = (now + timedelta(seconds=settings.JWT_EXP)).timestamp()
+    now = datetime.datetime.utcnow()
+    exp = (now + datetime.timedelta(seconds=settings.JWT_EXP)).timestamp()
     data = {'exp': exp, 'username': user.username, 'id': user.id}
     return jwt.encode(data, settings.JWT_SECRET, algorithm=settings.JWT_ALG)
 

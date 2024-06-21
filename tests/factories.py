@@ -6,6 +6,7 @@ from factory.fuzzy import FuzzyDateTime
 from faker import Faker
 from faker.providers import misc
 from pytz import UTC
+from twitter_api.posts.models import Post
 from twitter_api.users.auth import hash_password
 from twitter_api.users.models import Followership, User
 
@@ -42,3 +43,11 @@ class FollowershipFactory(TimeStampBaseFactory, BaseFactory):
 
     class Meta:
         model = Followership
+
+
+class PostFactory(TimeStampBaseFactory, BaseFactory):
+    author = SubFactory(UserFactory)
+    content = 'sample tweet'
+
+    class Meta:
+        model = Post

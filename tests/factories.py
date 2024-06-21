@@ -6,7 +6,8 @@ from factory.fuzzy import FuzzyDateTime
 from faker import Faker
 from faker.providers import misc
 from pytz import UTC
-from twitter_api.users.models import Followership, User, hash_password
+from twitter_api.users.auth import hash_password
+from twitter_api.users.models import Followership, User
 
 from .configs import Session
 
@@ -22,8 +23,8 @@ class BaseFactory(SQLAlchemyModelFactory):
 
 
 class TimeStampBaseFactory(BaseFactory):
-    created_at = FuzzyDateTime(datetime(2020, 1, 1, tzinfo=UTC))
-    updated_at = FuzzyDateTime(datetime(2020, 1, 1, tzinfo=UTC))
+    created_at = FuzzyDateTime(datetime(2024, 1, 1, tzinfo=UTC))
+    updated_at = FuzzyDateTime(datetime(2024, 1, 1, tzinfo=UTC))
 
 
 class UserFactory(TimeStampBaseFactory, BaseFactory):

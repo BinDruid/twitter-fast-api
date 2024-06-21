@@ -1,11 +1,23 @@
 from typing import Annotated
 
-from fastapi import Depends, HTTPException
-from starlette import status
+from fastapi import Depends, HTTPException, Request, status
 
+from twitter_api.core.middleware import AuthenticatedUser
 from twitter_api.database import DbSession
 
 from .models import Followership, User
+
+
+def get_current_user(request: Request) -> AuthenticatedUser:
+    if request.state.user.is_anonymous:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=[{'msg': 'Not Authorized'}],
+        )
+    return request.state.user
+
+
+CurrentUser = Annotated[AuthenticatedUser, Depends(get_current_user)]
 
 
 def get_user_by_name(username: str, db_session: DbSession) -> User:

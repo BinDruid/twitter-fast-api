@@ -4,7 +4,7 @@ from starlette import status
 from twitter_api.core.pagination import paginate
 from twitter_api.database import DbSession
 from twitter_api.engagements import tasks
-from twitter_api.users.auth import CurrentUser
+from twitter_api.users.depends import CurrentUser
 
 from . import services
 from .depends import AuthorByName, PostByAuthor, PostByID

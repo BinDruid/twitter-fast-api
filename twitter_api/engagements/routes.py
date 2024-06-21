@@ -5,7 +5,7 @@ from starlette import status
 from twitter_api.core.config import settings
 from twitter_api.database import DbSession
 from twitter_api.posts.depends import PostByID
-from twitter_api.users.auth import CurrentUser
+from twitter_api.users.depends import CurrentUser
 
 from . import services
 from .grpc import post_views_pb2, post_views_pb2_grpc

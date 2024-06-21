@@ -44,8 +44,8 @@ def test_anyone_can_do_not_get_token_with_invalid_credentials(client):
     assert 'token' not in response.json()
 
 
-def test_anyone_can_view_existing_user_profile(client, auth_user):
-    url = f'/users/profile/{auth_user.id}/'
+def test_anyone_can_view_existing_user_profile(client, test_user):
+    url = f'/users/profile/{test_user.id}/'
     response = client.get(url)
     assert response.status_code == status.HTTP_200_OK
 
@@ -56,13 +56,13 @@ def test_anyone_can_not_view_non_existing_user_profile(client):
     assert response.status_code == status.HTTP_404_NOT_FOUND
 
 
-def test_authenticated_user_can_delete_their_profile(client, auth_user, auth_header):
-    url = f'/users/profile/{auth_user.id}/'
+def test_authenticated_user_can_delete_their_profile(client, test_user, auth_header):
+    url = f'/users/profile/{test_user.id}/'
     response = client.delete(url, headers=auth_header)
     assert response.status_code == status.HTTP_204_NO_CONTENT
 
 
-def test_authenticated_user_can_not_delete_other_user_profile(client, auth_user, auth_header):
+def test_authenticated_user_can_not_delete_other_user_profile(client, test_user, auth_header):
     other_user = UserFactory()
     url = f'/users/profile/{other_user.id}/'
     response = client.delete(url, headers=auth_header)
@@ -107,40 +107,39 @@ def test_authenticated_user_can_remove_another_user_from_their_followers(client,
     assert response.status_code == status.HTTP_204_NO_CONTENT
 
 
-def test_authenticated_user_can_only_remove_their_followers(client, user_as_follower):
+def test_authenticated_user_can_only_remove_their_followers(client, user_as_follower, auth_header):
     user = user_as_follower.follower
-    headers = {'Authorization': f'Bearer {user.token}'}
     url = f'/users/{user_as_follower.following.id}/followers/{user.id}/'
-    response = client.delete(url, headers=headers)
+    response = client.delete(url, headers=auth_header)
     assert response.status_code == status.HTTP_403_FORBIDDEN
 
 
-def test_authenticated_user_can_not_remove_non_existing_followership(client, auth_user, auth_header):
+def test_authenticated_user_can_not_remove_non_existing_followership(client, test_user, auth_header):
     other_user = UserFactory()
-    url = f'/users/{auth_user.id}/followers/{other_user.id}/'
+    url = f'/users/{test_user.id}/followers/{other_user.id}/'
     response = client.delete(url, headers=auth_header)
     assert response.status_code == status.HTTP_404_NOT_FOUND
 
 
-def test_authenticated_user_can_follow_another_user(client, auth_user, auth_header):
+def test_authenticated_user_can_follow_another_user(client, test_user, auth_header):
     other_user = UserFactory()
     payload = {'user_id': other_user.id}
-    url = f'/users/{auth_user.id}/followings/'
+    url = f'/users/{test_user.id}/followings/'
     response = client.post(url, headers=auth_header, json=payload)
     assert response.status_code == status.HTTP_201_CREATED
 
 
-def test_authenticated_user_can_not_follow_another_user_on_behalf_of_other_user(client, auth_user, auth_header):
+def test_authenticated_user_can_not_follow_another_user_on_behalf_of_other_user(client, test_user, auth_header):
     other_user = UserFactory()
-    payload = {'user_id': auth_user.id}
+    payload = {'user_id': test_user.id}
     url = f'/users/{other_user.id}/followings/'
     response = client.post(url, headers=auth_header, json=payload)
     assert response.status_code == status.HTTP_403_FORBIDDEN
 
 
-def test_authenticated_user_can_not_follow_themselves(client, auth_user, auth_header):
-    payload = {'user_id': auth_user.id}
-    url = f'/users/{auth_user.id}/followings/'
+def test_authenticated_user_can_not_follow_themselves(client, test_user, auth_header):
+    payload = {'user_id': test_user.id}
+    url = f'/users/{test_user.id}/followings/'
     response = client.post(url, headers=auth_header, json=payload)
     assert response.status_code == status.HTTP_400_BAD_REQUEST
 

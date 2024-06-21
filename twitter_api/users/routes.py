@@ -4,8 +4,8 @@ from twitter_api.core.pagination import paginate
 from twitter_api.database import DbSession
 
 from . import services
-from .auth import CurrentUser, InvalidCredentialException
-from .depends import FollowerByID, FollowingByID, UserByID
+from .auth import InvalidCredentialException, check_password, generate_token
+from .depends import CurrentUser, FollowerByID, FollowingByID, UserByID
 from .models import FollowerShipPayload, User, UserCreatePayload, UserDetail, UserList, UserLoginPayload
 
 auth_router = APIRouter()
@@ -53,7 +53,7 @@ def follow_user(current_user: CurrentUser, db_session: DbSession, user: UserByID
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
     if user.id == following.user_id:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='User can not follow themselves')
-    services.follow_user(db_session=db_session, user=user, following=following)
+    services.follow_user(db_session=db_session, user=user, following_id=following.user_id)
     return {'message': f'User #{user.id} now is following user #{following.user_id}'}
 
 
@@ -71,7 +71,9 @@ def create_user(db_session: DbSession, payload: UserCreatePayload):
     username_already_exist = services.get_user_by_email(db_session=db_session, email=payload.email)
     if email_already_exist or username_already_exist:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='User already exists')
-    new_user = services.create_user(db_session=db_session, context=payload)
+    new_user = services.create_user(
+        db_session=db_session, username=payload.username, email=payload.email, password=payload.password
+    )
     return new_user
 
 
@@ -80,7 +82,8 @@ def login_user(db_session: DbSession, payload: UserLoginPayload):
     user = db_session.query(User).filter(User.username == payload.username).one_or_none()
     if user is None:
         raise InvalidCredentialException
-    is_authenticated = user.check_password(payload.password)
+    is_authenticated = check_password(user=user, password=payload.password)
     if not is_authenticated:
         raise InvalidCredentialException
-    return {'username': user.username, 'token': user.token}
+    token = generate_token(user=user)
+    return {'username': user.username, 'token': token}

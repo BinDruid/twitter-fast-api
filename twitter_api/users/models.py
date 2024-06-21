@@ -1,23 +1,14 @@
-from datetime import datetime, timedelta
 from typing import Optional
 
-import bcrypt
-from jose import jwt
 from pydantic import field_validator
 from pydantic.networks import EmailStr
 from sqlalchemy import Boolean, CheckConstraint, Column, ForeignKey, Integer, String, UniqueConstraint
 from sqlalchemy.orm import relationship
 
-from twitter_api.core.config import settings
 from twitter_api.core.pagination import Pagination
 from twitter_api.database import Base, PydanticBase, TimeStampedModel
 
-
-def hash_password(password: str) -> str:
-    """Generates a hashed version of the provided password."""
-    pw = bytes(password, 'utf-8')
-    salt = bcrypt.gensalt()
-    return bcrypt.hashpw(pw, salt).decode('utf-8')
+from .auth import hash_password
 
 
 class User(Base, TimeStampedModel):
@@ -33,16 +24,6 @@ class User(Base, TimeStampedModel):
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
-
-    @property
-    def token(self):
-        now = datetime.utcnow()
-        exp = (now + timedelta(seconds=settings.JWT_EXP)).timestamp()
-        data = {'exp': exp, 'username': self.username, 'id': self.id}
-        return jwt.encode(data, settings.JWT_SECRET, algorithm=settings.JWT_ALG)
-
-    def check_password(self, password):
-        return bcrypt.checkpw(password.encode('utf-8'), self.password.encode('utf-8'))
 
 
 class Followership(Base, TimeStampedModel):

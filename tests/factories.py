@@ -23,8 +23,8 @@ class BaseFactory(SQLAlchemyModelFactory):
 
 
 class TimeStampBaseFactory(BaseFactory):
-    created_at = FuzzyDateTime(datetime(2020, 1, 1, tzinfo=UTC))
-    updated_at = FuzzyDateTime(datetime(2020, 1, 1, tzinfo=UTC))
+    created_at = FuzzyDateTime(datetime(2024, 1, 1, tzinfo=UTC))
+    updated_at = FuzzyDateTime(datetime(2024, 1, 1, tzinfo=UTC))
 
 
 class UserFactory(TimeStampBaseFactory, BaseFactory):

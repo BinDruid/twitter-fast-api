@@ -6,7 +6,8 @@ from factory.fuzzy import FuzzyDateTime
 from faker import Faker
 from faker.providers import misc
 from pytz import UTC
-from twitter_api.users.models import Followership, User, hash_password
+from twitter_api.users.auth import hash_password
+from twitter_api.users.models import Followership, User
 
 from .configs import Session
 

@@ -3,6 +3,7 @@ from fastapi.testclient import TestClient
 from twitter_api.database import Base, engine
 from twitter_api.database.depends import get_db_session
 from twitter_api.main import api
+from twitter_api.users.auth import generate_token
 
 from .configs import Session
 from .factories import FollowershipFactory, UserFactory
@@ -42,7 +43,7 @@ def test_user():
 
 @pytest.fixture()
 def auth_header(test_user):
-    return {'Authorization': f'Bearer {test_user.token}'}
+    return {'Authorization': f'Bearer {generate_token(user=test_user)}'}
 
 
 @pytest.fixture()

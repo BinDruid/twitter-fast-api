@@ -107,11 +107,10 @@ def test_authenticated_user_can_remove_another_user_from_their_followers(client,
     assert response.status_code == status.HTTP_204_NO_CONTENT
 
 
-def test_authenticated_user_can_only_remove_their_followers(client, user_as_follower):
+def test_authenticated_user_can_only_remove_their_followers(client, user_as_follower, auth_header):
     user = user_as_follower.follower
-    headers = {'Authorization': f'Bearer {user.token}'}
     url = f'/users/{user_as_follower.following.id}/followers/{user.id}/'
-    response = client.delete(url, headers=headers)
+    response = client.delete(url, headers=auth_header)
     assert response.status_code == status.HTTP_403_FORBIDDEN
 
 

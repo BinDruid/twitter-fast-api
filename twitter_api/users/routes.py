@@ -4,8 +4,8 @@ from twitter_api.core.pagination import paginate
 from twitter_api.database import DbSession
 
 from . import services
-from .auth import CurrentUser, InvalidCredentialException
-from .depends import FollowerByID, FollowingByID, UserByID
+from .auth import InvalidCredentialException, check_password, generate_token
+from .depends import CurrentUser, FollowerByID, FollowingByID, UserByID
 from .models import FollowerShipPayload, User, UserCreatePayload, UserDetail, UserList, UserLoginPayload
 
 auth_router = APIRouter()
@@ -82,7 +82,8 @@ def login_user(db_session: DbSession, payload: UserLoginPayload):
     user = db_session.query(User).filter(User.username == payload.username).one_or_none()
     if user is None:
         raise InvalidCredentialException
-    is_authenticated = user.check_password(payload.password)
+    is_authenticated = check_password(user=user, password=payload.password)
     if not is_authenticated:
         raise InvalidCredentialException
-    return {'username': user.username, 'token': user.token}
+    token = generate_token(user=user)
+    return {'username': user.username, 'token': token}

@@ -36,22 +36,22 @@ def client(test_api):
 
 
 @pytest.fixture()
-def auth_user():
+def test_user():
     return UserFactory(username='bindruid', email='abharya.dev@gmail.com')
 
 
 @pytest.fixture()
-def auth_header(auth_user):
-    return {'Authorization': f'Bearer {auth_user.token}'}
+def auth_header(test_user):
+    return {'Authorization': f'Bearer {test_user.token}'}
 
 
 @pytest.fixture()
-def user_as_follower(auth_user):
+def user_as_follower(test_user):
     other_user = UserFactory()
-    return FollowershipFactory(follower=auth_user, following=other_user)
+    return FollowershipFactory(follower=test_user, following=other_user)
 
 
 @pytest.fixture()
-def user_as_following(auth_user):
+def user_as_following(test_user):
     other_user = UserFactory()
-    return FollowershipFactory(follower=other_user, following=auth_user)
+    return FollowershipFactory(follower=other_user, following=test_user)

@@ -4,8 +4,8 @@ from twitter_api.users.models import Followership, FollowerShipPayload, User, Us
 from tests.factories import UserFactory
 
 
-def test_get_user_by_email_for_existing_user(session, auth_user):
-    user = services.get_user_by_email(db_session=session, email=auth_user.email)
+def test_get_user_by_email_for_existing_user(session, test_user):
+    user = services.get_user_by_email(db_session=session, email=test_user.email)
     assert user
 
 
@@ -14,8 +14,8 @@ def test_get_user_by_email_for_non_existing_user(session):
     assert user is None
 
 
-def test_get_user_by_username_for_existing_user(session, auth_user):
-    user = services.get_user_by_username(db_session=session, username=auth_user.username)
+def test_get_user_by_username_for_existing_user(session, test_user):
+    user = services.get_user_by_username(db_session=session, username=test_user.username)
     assert user
 
 
@@ -24,9 +24,9 @@ def test_get_user_by_username_for_non_existing_user(session):
     assert user is None
 
 
-def test_delete_user(session, auth_user):
-    services.delete_user(db_session=session, user=auth_user)
-    user_exists = session.query(session.query(User).filter(User.id == auth_user.id).exists()).scalar()
+def test_delete_user(session, test_user):
+    services.delete_user(db_session=session, user=test_user)
+    user_exists = session.query(session.query(User).filter(User.id == test_user.id).exists()).scalar()
     assert user_exists is False
 
 
@@ -58,12 +58,12 @@ def test_remove_user_from_followers(session, user_as_following):
     assert followership_exists is False
 
 
-def test_follow_user(session, auth_user):
+def test_follow_user(session, test_user):
     following_user = UserFactory()
-    services.follow_user(db_session=session, user=auth_user, following=FollowerShipPayload(user_id=following_user.id))
+    services.follow_user(db_session=session, user=test_user, following=FollowerShipPayload(user_id=following_user.id))
     followership_exists = session.query(
         session.query(Followership)
-        .filter(Followership.following_id == following_user.id, Followership.follower_id == auth_user.id)
+        .filter(Followership.following_id == following_user.id, Followership.follower_id == test_user.id)
         .exists()
     ).scalar()
     assert followership_exists

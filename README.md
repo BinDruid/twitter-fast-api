@@ -6,7 +6,6 @@
 ## Prerequisites
 
 - `Python 3.11`
-- `Pipenv`
 - `Postgresql 13`
 
 
@@ -47,7 +46,7 @@ alembic upgrade head
 ### Run the fastapi app
 
 ```shell
-make runserver
+make dev
 ```
 
 ### Run tests

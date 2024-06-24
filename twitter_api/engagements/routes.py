@@ -1,7 +1,7 @@
 import grpc
-from fastapi import APIRouter, HTTPException
-from starlette import status
+from fastapi import APIRouter, status
 
+from twitter_api.core import exceptions
 from twitter_api.core.config import settings
 from twitter_api.database import DbSession
 from twitter_api.posts.depends import PostByID
@@ -24,11 +24,9 @@ def like_post(user: CurrentUser, db_session: DbSession, post: PostByID):
 def dislike_post(user: CurrentUser, db_session: DbSession, post: PostByID):
     like = db_session.query(Like).filter(Like.user_id == user.id, Like.post_id == post.id).one_or_none()
     if like is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f'User #{user.id} did not like post #{post.id}'
-        )
+        raise exceptions.NotFound(detail=f'User #{user.id} did not like post #{post.id}')
     if like.user_id != user.id:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f'You did not like post #{post.id}')
+        raise exceptions.NotFound(detail=f'You did not like post #{post.id}')
     services.delete_like_for_post(db_session=db_session, like=like)
     return {'message': f'User #{user.id} disliked post #{post.id}'}
 

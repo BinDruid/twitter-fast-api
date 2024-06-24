@@ -5,7 +5,7 @@ from fastapi import FastAPI
 
 
 @asynccontextmanager
-async def lifespan(_application: FastAPI) -> AsyncGenerator:
+async def lifespan(application: FastAPI) -> AsyncGenerator:
     # Startup
     yield
     # Shutdown

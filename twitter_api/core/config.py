@@ -1,22 +1,28 @@
+from enum import Enum
 from pathlib import Path
 from typing import Any
 
 from pydantic import ConfigDict, PostgresDsn
 from pydantic_settings import BaseSettings
 
-try:
-    from enum import StrEnum
-except ImportError:
-    from enum import Enum
 
-    class StrEnum(str, Enum):
-        pass
+class Environment(str, Enum):
+    LOCAL = 'LOCAL'
+    TEST = 'TEST'
+    STAGING = 'STAGING'
+    PRODUCTION = 'PRODUCTION'
 
+    @property
+    def is_debug(self):
+        return self in (self.LOCAL, self.STAGING, self.TEST)
 
-class Environment(StrEnum):
-    dev = 'dev'
-    prod = 'prod'
-    test = 'test'
+    @property
+    def is_testing(self):
+        return self == self.TEST
+
+    @property
+    def is_deployed(self) -> bool:
+        return self in (self.STAGING, self.PRODUCTION)
 
 
 class Paths:

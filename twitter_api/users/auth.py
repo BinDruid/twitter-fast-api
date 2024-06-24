@@ -1,14 +1,9 @@
 import datetime
 
 import bcrypt
-from fastapi import HTTPException, status
 from jose import jwt
 
 from twitter_api.core.config import settings
-
-InvalidCredentialException = HTTPException(
-    status_code=status.HTTP_401_UNAUTHORIZED, detail=[{'msg': 'Could not validate credentials'}]
-)
 
 
 def generate_token(*, user) -> str:

@@ -1,6 +1,6 @@
-from fastapi import APIRouter, BackgroundTasks, HTTPException
-from starlette import status
+from fastapi import APIRouter, BackgroundTasks, status
 
+from twitter_api.core import exceptions
 from twitter_api.core.pagination import paginate
 from twitter_api.database import DbSession
 from twitter_api.engagements import tasks
@@ -65,7 +65,7 @@ async def create_user_post(user: CurrentUser, db_session: DbSession, worker: Bac
 @router.patch('/{post_id}/', status_code=status.HTTP_206_PARTIAL_CONTENT, response_model=PostDetail)
 async def update_user_post(user: CurrentUser, db_session: DbSession, post: PostByID, payload: PostPayload):
     if post.author_id != user.id:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f'You do not own post #{post.id}')
+        raise exceptions.PermissionDenied(detail=f'You do not own post #{post.id}')
     updated_post = services.update_post_for_user(db_session=db_session, post=post, context=payload)
     return updated_post
 
@@ -74,7 +74,7 @@ async def update_user_post(user: CurrentUser, db_session: DbSession, post: PostB
 async def delete_user_post(user: CurrentUser, db_session: DbSession, post: PostByID, worker: BackgroundTasks):
     post_id = post.id
     if post.author_id != user.id:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f'You do not own post #{post_id}')
+        raise exceptions.PermissionDenied(detail=f'You do not own post #{post.id}')
     services.delete_post_for_user(db_session=db_session, post=post)
     worker.add_task(tasks.delete_post_view_count_entry, post_id)
     return {'message': f'Deleted post {post_id}'}

@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 
 from twitter_api.core.config import app_configs
-from twitter_api.core.middleware import AuthenticationMiddleware, ExceptionMiddleware, LoggingMiddleware
 from twitter_api.core.lifespan import lifespan
+from twitter_api.core.middleware import AuthenticationMiddleware, ExceptionMiddleware, LoggingMiddleware
 from twitter_api.routes import api_router
 
 

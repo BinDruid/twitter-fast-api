@@ -6,7 +6,7 @@
 ## Prerequisites
 
 - `Python 3.11`
-- `Postgresql 13`
+- `Postgresql 15`
 
 
 ## Development

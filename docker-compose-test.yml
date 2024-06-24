@@ -5,7 +5,7 @@ networks:
 
 services:
   analytics_test_db:
-    image: "postgres:13-alpine"
+    image: "postgres:15-alpine"
     restart: "no"
     environment:
       POSTGRES_USER: analytics_test_api
@@ -34,7 +34,7 @@ services:
       - TWITTER_BACKEND_TEST
 
   twitter_db_test:
-    image: "postgres:13-alpine"
+    image: "postgres:15-alpine"
     restart: "no"
     environment:
       POSTGRES_USER: test_twitter_api

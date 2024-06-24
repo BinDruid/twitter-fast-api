@@ -9,7 +9,7 @@ networks:
 
 services:
   twitter_db:
-    image: "postgres:13-alpine"
+    image: "postgres:15-alpine"
     restart: "no"
     ports:
       - "5314:5432"
@@ -26,7 +26,7 @@ services:
 
 
   analytics_db:
-    image: "postgres:13-alpine"
+    image: "postgres:15-alpine"
     restart: "no"
     environment:
       POSTGRES_USER: analytics_api

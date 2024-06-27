@@ -49,6 +49,12 @@ alembic upgrade head
 make dev
 ```
 
+Then initialize database with make command:
+
+```shell
+make migrate
+```
+
 ### Run tests
 
 ```shell

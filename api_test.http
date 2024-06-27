@@ -73,7 +73,7 @@ Accept: application/json
 Authorization: Bearer {{token_1}}
 
 ###
-GET {{base_url}}/posts/druid/1/
+GET {{base_url}}/posts/druid/2/
 Accept: application/json
 Authorization: Bearer {{token_1}}
 
@@ -123,6 +123,12 @@ Authorization: Bearer {{token_1}}
 ###
 
 ###
+GET {{base_url}}/engagements/statistics/2/
+Accept: application/json
+Authorization: Bearer {{token_1}}
+###
+
+###
 POST {{base_url}}/engagements/likes/2/
 Accept: application/json
 Authorization: Bearer {{token_1}}
@@ -136,7 +142,25 @@ Authorization: Bearer {{token_1}}
 
 
 ###
-GET {{base_url}}/engagements/views/1/
+GET {{base_url}}/engagements/views/2/
+Accept: application/json
+Authorization: Bearer {{token_1}}
+###
+
+###
+GET {{base_url}}/engagements/likes/1/
+Accept: application/json
+Authorization: Bearer {{token_1}}
+###
+
+###
+GET {{base_url}}/engagements/bookmarks/1/
+Accept: application/json
+Authorization: Bearer {{token_1}}
+###
+
+###
+POST {{base_url}}/engagements/bookmarks/1/
 Accept: application/json
 Authorization: Bearer {{token_1}}
 ###

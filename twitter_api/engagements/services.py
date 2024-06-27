@@ -9,7 +9,7 @@ from .grpc import post_views_pb2, post_views_pb2_grpc
 from .models import Bookmark, Like
 
 
-def get_total_views_for_post(*, post_id: int) -> int:
+def count_total_views_for_post(*, post_id: int) -> int:
     with grpc.insecure_channel(settings.ANALYTICS_URL) as channel:
         stub = post_views_pb2_grpc.PostViewAnalyticsStub(channel)
         response = stub.GetViewCount(post_views_pb2.PostViewRequest(post_id=post_id))

@@ -11,11 +11,11 @@ router = APIRouter()
 
 
 @router.get('/statistics/{post_id}/', status_code=status.HTTP_200_OK)
-def get_post_statistics(db_session: DbSession, post: PostByID):
+def count_total_post_statistics(db_session: DbSession, post: PostByID):
     likes_count = services.count_total_likes_for_post(db_session=db_session, post=post)
     bookmarks_count = services.count_total_bookmarks_for_post(db_session=db_session, post=post)
-    view_count = services.get_total_views_for_post(post_id=post.id)
-    return {'view_count': view_count, 'likes_count': likes_count, 'bookmarks_count': bookmarks_count}
+    views_count = services.count_total_views_for_post(post_id=post.id)
+    return {'views_count': views_count, 'likes_count': likes_count, 'bookmarks_count': bookmarks_count}
 
 
 @router.get('/likes/{post_id}/', status_code=status.HTTP_200_OK)
@@ -72,5 +72,5 @@ def un_bookmark_post(user: CurrentUser, db_session: DbSession, post: PostByID):
 
 @router.get('/views/{post_id}/')
 def get_count_of_post_views(post_id: int):
-    post_view_count = services.get_total_views_for_post(post_id=post_id)
+    post_view_count = services.count_total_views_for_post(post_id=post_id)
     return {'post_id': post_id, 'view_count': post_view_count}

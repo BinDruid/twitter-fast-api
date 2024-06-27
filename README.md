@@ -6,7 +6,7 @@
 ## Prerequisites
 
 - `Python 3.11`
-- `Postgresql 13`
+- `Postgresql 15`
 
 
 ## Development
@@ -47,6 +47,12 @@ alembic upgrade head
 
 ```shell
 make dev
+```
+
+Then initialize database with make command:
+
+```shell
+make migrate
 ```
 
 ### Run tests

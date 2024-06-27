@@ -37,7 +37,7 @@ Create your first migration
 alembic revision --autogenerate
 ```
 
-Upgrading the database when new migrations are created.
+Upgrading the database when new migrations are created
 
 ```shell
 alembic upgrade head
@@ -49,7 +49,7 @@ alembic upgrade head
 make dev
 ```
 
-Then initialize database with make command:
+### Run database migrations
 
 ```shell
 make migrate

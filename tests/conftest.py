@@ -6,7 +6,7 @@ from twitter_api.main import api
 from twitter_api.users.auth import generate_token
 
 from .configs import Session
-from .factories import FollowershipFactory, PostFactory, UserFactory
+from .factories import FollowershipFactory, MentionFactory, PostFactory, UserFactory
 
 
 @pytest.fixture()
@@ -69,6 +69,8 @@ def post_with_quote(test_user):
     return PostFactory(author=test_user, quoted_post=quoted_post)
 
 
+@pytest.fixture()
 def post_with_mention(test_user):
-    quoted_post = PostFactory(author=test_user)
-    return PostFactory(author=test_user, quoted_post=quoted_post)
+    post = PostFactory(author=test_user)
+    mention = PostFactory(author=test_user)
+    return MentionFactory(mention=mention, original_post=post)

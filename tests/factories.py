@@ -6,7 +6,7 @@ from factory.fuzzy import FuzzyDateTime
 from faker import Faker
 from faker.providers import misc
 from pytz import UTC
-from twitter_api.posts.models import Post
+from twitter_api.posts.models import Mention, Post
 from twitter_api.users.auth import hash_password
 from twitter_api.users.models import Followership, User
 
@@ -51,3 +51,11 @@ class PostFactory(TimeStampBaseFactory, BaseFactory):
 
     class Meta:
         model = Post
+
+
+class MentionFactory(TimeStampBaseFactory, BaseFactory):
+    mention = SubFactory(PostFactory)
+    original_post = SubFactory(PostFactory)
+
+    class Meta:
+        model = Mention

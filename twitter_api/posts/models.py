@@ -29,6 +29,8 @@ class Mention(Base, TimeStampedModel):
     id = Column(Integer, primary_key=True)
     mention_id = Column(Integer, ForeignKey('posts.id'), nullable=False)
     original_post_id = Column(Integer, ForeignKey('posts.id'), nullable=False)
+    mention = relationship('Post', foreign_keys=[mention_id])
+    original_post = relationship('Post', foreign_keys=[original_post_id])
 
 
 class PostPayload(PydanticBase):

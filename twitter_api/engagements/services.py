@@ -43,7 +43,7 @@ def count_total_bookmarks_for_post(*, db_session: Session, post: Post) -> int:
 
 
 def get_bookmark_by_user_post(*, db_session: Session, user: User, post: Post) -> Bookmark:
-    bookmark = db_session.query(Like).filter(Bookmark.user_id == user.id, Bookmark.post_id == post.id).one_or_none()
+    bookmark = db_session.query(Bookmark).filter(Bookmark.user_id == user.id, Bookmark.post_id == post.id).one_or_none()
     return bookmark
 
 

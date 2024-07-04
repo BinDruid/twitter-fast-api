@@ -1,4 +1,5 @@
 from sqlalchemy import Column, ForeignKey, Integer, UniqueConstraint
+from sqlalchemy.orm import relationship
 
 from twitter_api.database import Base, TimeStampedModel
 
@@ -10,6 +11,8 @@ class Like(Base, TimeStampedModel):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     post_id = Column(Integer, ForeignKey('posts.id', ondelete='CASCADE'), nullable=False)
+    user = relationship('User', foreign_keys='Like.user_id')
+    post = relationship('Post', foreign_keys='Like.post_id')
 
 
 class Bookmark(Base, TimeStampedModel):
@@ -19,6 +22,8 @@ class Bookmark(Base, TimeStampedModel):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     post_id = Column(Integer, ForeignKey('posts.id', ondelete='CASCADE'), nullable=False)
+    user = relationship('User', foreign_keys='Bookmark.user_id')
+    post = relationship('Post', foreign_keys='Bookmark.post_id')
 
 
 class View(Base, TimeStampedModel):
@@ -28,3 +33,4 @@ class View(Base, TimeStampedModel):
     id = Column(Integer, primary_key=True)
     post_id = Column(Integer, ForeignKey('posts.id', ondelete='CASCADE'), nullable=False)
     count = Column(Integer, default=0)
+    post = relationship('Post', foreign_keys='View.post_id')

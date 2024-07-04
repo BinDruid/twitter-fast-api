@@ -71,6 +71,6 @@ def un_bookmark_post(user: CurrentUser, db_session: DbSession, post: PostByID):
 
 
 @router.get('/views/{post_id}/')
-def get_count_of_post_views(post_id: int):
-    post_view_count = services.count_total_views_for_post(post_id=post_id)
-    return {'post_id': post_id, 'view_count': post_view_count}
+def get_count_of_post_views(post: PostByID):
+    post_view_count = services.count_total_views_for_post(post_id=post.id)
+    return {'post_id': post.id, 'view_count': post_view_count}

@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 import pytest
 from fastapi.testclient import TestClient
 from twitter_api.database import Base, engine
@@ -6,7 +8,7 @@ from twitter_api.main import api
 from twitter_api.users.auth import generate_token
 
 from .configs import Session
-from .factories import FollowershipFactory, MentionFactory, PostFactory, UserFactory
+from .factories import BookmarkFactory, FollowershipFactory, LikeFactory, MentionFactory, PostFactory, UserFactory
 
 
 @pytest.fixture()
@@ -74,3 +76,24 @@ def post_with_mention(test_user):
     post = PostFactory(author=test_user)
     mention = PostFactory(author=test_user)
     return MentionFactory(mention=mention, original_post=post)
+
+
+@pytest.fixture()
+def liked_post(test_user):
+    post = PostFactory(author=test_user)
+    LikeFactory(user=test_user, post=post)
+    return post
+
+
+@pytest.fixture()
+def bookmarked_post(test_user):
+    post = PostFactory(author=test_user)
+    BookmarkFactory(user=test_user, post=post)
+    return post
+
+
+@pytest.fixture()
+def mocked_view_analytics_service():
+    with patch('twitter_api.engagements.services.count_total_views_for_post') as views_analytics_service:
+        views_analytics_service.return_value = 1
+        yield

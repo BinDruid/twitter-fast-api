@@ -10,7 +10,7 @@ def test_anyone_can_register_with_valid_register_info(client):
     assert response.status_code == status.HTTP_201_CREATED
 
 
-def test_anyone_can_not_register_with_with_duplicate_username(client):
+def test_no_one_can_register_with_duplicate_username(client):
     url = '/auth/'
     payload = {'email': 'user@gmail.com', 'username': 'druid', 'password': '123456'}
     UserFactory(username=payload['username'])
@@ -18,7 +18,7 @@ def test_anyone_can_not_register_with_with_duplicate_username(client):
     assert response.status_code == status.HTTP_400_BAD_REQUEST
 
 
-def test_anyone_can_not_register_with_with_duplicate_email(client):
+def test_no_one_can_register_with_duplicate_email(client):
     url = '/auth/'
     payload = {'email': 'user@gmail.com', 'username': 'druid', 'password': '123456'}
     UserFactory(email=payload['email'])
@@ -35,7 +35,7 @@ def test_anyone_can_get_token_when_login_successfully(client):
     assert 'token' in response.json()
 
 
-def test_anyone_can_do_not_get_token_with_invalid_credentials(client):
+def test_no_one_can_get_token_with_invalid_credentials(client):
     sample_user = UserFactory()
     url = '/auth/login/'
     payload = {'username': sample_user.username, 'password': 'invalid_pass'}
@@ -50,7 +50,7 @@ def test_anyone_can_view_existing_user_profile(client, test_user):
     assert response.status_code == status.HTTP_200_OK
 
 
-def test_anyone_can_not_view_non_existing_user_profile(client):
+def test_no_one_can_view_non_existing_user_profile(client):
     url = '/users/profile/100000/'
     response = client.get(url)
     assert response.status_code == status.HTTP_404_NOT_FOUND
@@ -82,7 +82,7 @@ def test_anyone_can_view_user_followers(client, user_as_follower):
     assert response.status_code == status.HTTP_200_OK
 
 
-def test_anyone_can_not_view_non_existing_user_followers(client):
+def test_no_one_can_view_non_existing_user_followers(client):
     url = '/users/10000/followers/'
     response = client.get(url)
     assert response.status_code == status.HTTP_404_NOT_FOUND
@@ -94,7 +94,7 @@ def test_anyone_can_view_user_followings(client, user_as_following):
     assert response.status_code == status.HTTP_200_OK
 
 
-def test_anyone_can_not_view_non_existing_user_followings(client):
+def test_no_one_can_view_non_existing_user_followings(client):
     url = '/users/10000/followings/'
     response = client.get(url)
     assert response.status_code == status.HTTP_404_NOT_FOUND

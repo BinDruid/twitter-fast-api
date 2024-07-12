@@ -43,11 +43,13 @@ Upgrading the database when new migrations are created
 alembic upgrade head
 ```
 
-### Run the fastapi app
+### Run fastapi app
 
 ```shell
 make dev
 ```
+
+Check API documentation at `localhost:8000/docs` or `localhost:8000/redoc`
 
 ### Run database migrations
 

@@ -54,7 +54,7 @@ def test_anyone_can_view_list_of_post_of_an_existing_user(client, test_user):
     assert response.status_code == status.HTTP_200_OK
 
 
-def test_anyone_can_not_view_list_of_post_of_a_non_existing_user(client):
+def test_no_one_can_view_list_of_post_of_a_non_existing_user(client):
     url = '/posts/none/'
     response = client.get(url)
     assert response.status_code == status.HTTP_404_NOT_FOUND

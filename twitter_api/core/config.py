@@ -39,6 +39,8 @@ class Settings(BaseSettings):
 
     ENVIRONMENT: Environment
     SECRET_KEY: str
+    SENTRY_ENABLED: bool
+    SENTRY_DSN: str
     DEBUG: bool = True
     DB_URL: PostgresDsn
     ANALYTICS_HOST: str

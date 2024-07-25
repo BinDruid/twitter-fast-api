@@ -3,9 +3,11 @@ from typing import AsyncGenerator
 
 from fastapi import FastAPI
 
+from .logging import configure_sentry
+
 
 @asynccontextmanager
 async def lifespan(application: FastAPI) -> AsyncGenerator:
-    # Startup
+    configure_sentry()
     yield
     # Shutdown

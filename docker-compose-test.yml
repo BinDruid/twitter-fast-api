@@ -63,6 +63,9 @@ services:
       JWT_SECRET: super_jwt_secret_key
       ANALYTICS_HOST: analytics_test
       ANALYTICS_PORT: 50051
+      SENTRY_ENABLED: 0
+      SENTRY_DSN: localhost"
+
     depends_on:
       - twitter_db_test
       - analytics_test

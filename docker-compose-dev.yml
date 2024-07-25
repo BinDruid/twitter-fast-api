@@ -69,6 +69,9 @@ services:
       ANALYTICS_PORT: 50051
       SECRET_KEY: super_secret_key
       JWT_SECRET: super_jwt_secret_key
+      SENTRY_ENABLED: 0
+      SENTRY_DSN: localhost"
+
     depends_on:
       - twitter_db
       - analytics

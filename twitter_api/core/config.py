@@ -43,6 +43,9 @@ class Settings(BaseSettings):
     SENTRY_DSN: str
     DEBUG: bool = True
     DB_URL: PostgresDsn
+    CORS_ORIGINS: list[str] = ['*']
+    CORS_ORIGINS_REGEX: str | None = None
+    CORS_HEADERS: list[str] = ['*']
     ANALYTICS_HOST: str
     ANALYTICS_PORT: int
     PAGINATION_PER_PAGE: int = 20

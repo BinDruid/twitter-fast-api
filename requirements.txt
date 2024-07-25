@@ -1,6 +1,8 @@
 fastapi
 pydantic
 pydantic-settings
+aiohttp
+sentry-asgi
 bcrypt
 python-jose
 typer

@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from sentry_asgi import SentryMiddleware
 
 from twitter_api.core.config import app_configs
 from twitter_api.core.lifespan import lifespan
@@ -14,6 +15,7 @@ def get_application() -> FastAPI:
 
 api = get_application()
 
+api.add_middleware(SentryMiddleware)
 api.add_middleware(LoggingMiddleware)
 api.add_middleware(AuthenticationMiddleware)
 api.add_middleware(ExceptionMiddleware)
